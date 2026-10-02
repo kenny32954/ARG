@@ -58,7 +58,7 @@ NOTE: disconnecting antenna did not reduce signal.`},
 SOURCE NUMBER: NONE
 ROUTING RECORD: NONE
 AUDIO DEVICE: J-17 INTERNAL MODEM`},
-  cache17:{name:"CACHE_17.BIN",type:"hex",content:"2f6a6f6e61682f63616368652e68746d6c"},
+  cache17:{name:"CACHE_17.BIN",type:"hex",content:"2f4152472f6a6f6e61682f63616368652e68746d6c"},
   system:{name:"System Info",type:"system"},
   browser:{name:"Ravenswood Net",type:"browser"}
 };
