@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050708">
+<title>RWD SIGNAL LAB // TAPE 1987-04</title>
+<style>
+:root{--bg:#040607;--panel:#091014;--line:#233b43;--text:#a9cad1;--muted:#58737c;--bright:#dcf7fa;--red:#cf6760;--green:#88c6a1}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(52,94,105,.18),transparent 45%),#040607;color:var(--text);font-family:"Courier New",monospace;letter-spacing:.03em}.scan{position:fixed;inset:0;pointer-events:none;opacity:.07;background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,#000 3px,#000 4px)}
+.shell{width:min(1380px,calc(100% - 20px));margin:auto;padding:16px 0 32px}header{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;border-bottom:1px solid var(--line);padding:5px 2px 12px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.61rem}h1{margin:0;color:var(--bright);font-size:clamp(1.3rem,4vw,2.1rem)}.tag{border:1px solid var(--line);padding:7px 10px;color:var(--muted);font-size:.61rem}
+.grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.6fr);gap:12px}.panel{border:1px solid var(--line);background:linear-gradient(#0a1115,#070b0d);border-radius:5px;overflow:hidden}.bar{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:34px;padding:8px 10px;border-bottom:1px solid var(--line);background:#081014;color:var(--muted);font-size:.62rem}
+.scope{height:330px;background:#010304;position:relative}.scope canvas{display:block;width:100%;height:100%}.scope:after{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(85,137,149,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(85,137,149,.08) 1px,transparent 1px);background-size:32px 32px}.scale{display:flex;justify-content:space-between;padding:7px 10px;color:#4c6670;font-size:.55rem}
+.controls{padding:12px}.control{margin-bottom:12px}.control div{display:flex;justify-content:space-between;font-size:.59rem;color:var(--muted);margin-bottom:5px}.control select,.control input{width:100%;background:#05090b;border:1px solid #2b444c;color:var(--bright);padding:9px;font:inherit}.control input{accent-color:#7ec1d0}.row{display:grid;grid-template-columns:1fr 1fr;gap:7px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px}.buttons button{border:1px solid var(--line);background:#0d1518;color:var(--text);padding:10px;font:inherit;font-size:.62rem;cursor:pointer}.buttons button:hover{border-color:#4c727c;color:var(--bright)}.meter{height:13px;border:1px solid #2d454d;padding:2px;background:#020405;margin-top:9px}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#334f5a,#8dd0dc);transition:width .25s}.mini{font-size:.57rem;color:#546c74;line-height:1.45;margin:8px 0 0}
+.out{grid-column:1/-1}.terminal{min-height:245px;padding:12px;background:#020405;font-size:.64rem;line-height:1.5;overflow:auto}.terminal p{margin:0 0 5px}.terminal .ok{color:#d8f3e0}.terminal .bad{color:#df817a}.terminal .dim{color:#516a72}.bytes{font-family:"Courier New",monospace;word-break:break-all;color:#7999a1}
+.recovered{grid-column:1/-1}.payload{padding:18px;line-height:1.55}.payload h2{margin:0 0 8px;color:var(--bright);font-size:1rem}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0}.facts div{border:1px solid var(--line);padding:10px}.facts span{display:block;font-size:.54rem;color:var(--muted);margin-bottom:4px}.facts strong{font-size:.67rem;color:var(--bright);font-weight:normal}.payload code{display:block;background:#020405;border:1px solid #20363d;padding:10px;color:#a8d9b4;word-break:break-all;font-size:.64rem}.next{display:inline-block;border:1px solid #613532;color:#dc827d;text-decoration:none;padding:9px 11px;margin-top:12px;font-size:.64rem}
+footer{display:flex;justify-content:space-between;gap:12px;color:#344b51;font-size:.54rem;padding:12px 2px 0}@media(max-width:820px){.grid{grid-template-columns:1fr}.out,.recovered{grid-column:auto}.facts{grid-template-columns:1fr}}@media(max-width:500px){header{flex-direction:column;align-items:flex-start}.tag{align-self:flex-end}.row,.buttons{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="scan"></div>
+<main class="shell">
+<header><div><p>RAVENSWOOD SIGNAL ANALYSIS BENCH / RECOVERED TAPE DUB</p><h1>FSK RECOVERY LAB</h1></div><div class="tag">OBJECT RWD-1987-04</div></header>
+<section class="grid">
+  <article class="panel">
+    <div class="bar"><span>DUAL-TONE SPECTRUM</span><span id="scopeState">UNLOCKED</span></div>
+    <div class="scope"><canvas id="scope" width="1000" height="330"></canvas></div>
+    <div class="scale"><span>0 Hz</span><span>600</span><span>1200</span><span>1800</span><span>2400</span><span>3000 Hz</span></div>
+  </article>
+  <aside class="panel controls">
+    <div class="bar"><span>DEMODULATOR</span><span id="quality">0%</span></div>
+    <div class="row">
+      <div class="control"><div><span>MARK</span><span>Hz</span></div><select id="mark"><option>900</option><option selected>1200</option><option>1500</option><option>1800</option></select></div>
+      <div class="control"><div><span>SPACE</span><span>Hz</span></div><select id="space"><option>1700</option><option selected>2200</option><option>2400</option><option>2700</option></select></div>
+    </div>
+    <div class="row">
+      <div class="control"><div><span>BAUD</span><span>symbols/s</span></div><select id="baud"><option>110</option><option selected>300</option><option>600</option><option>1200</option></select></div>
+      <div class="control"><div><span>POLARITY</span><span>bit sense</span></div><select id="polarity"><option value="normal">NORMAL</option><option value="invert">INVERT</option></select></div>
+    </div>
+    <div class="control"><div><span>SYNC OFFSET</span><span id="syncOut">0</span></div><input id="sync" type="range" min="-8" max="8" value="0"></div>
+    <div class="meter"><i id="meter"></i></div>
+    <div class="buttons"><button id="listen" type="button">MONITOR TONES</button><button id="decode" type="button">DECODE BUFFER</button></div>
+    <p class="mini">Recovered tape contains two stable tone families and a repeating framing interval.</p>
+  </aside>
+
+  <article class="panel out">
+    <div class="bar"><span>DECODER OUTPUT</span><span id="decodeState">NO FRAME</span></div>
+    <div class="terminal" id="terminal"><p class="dim">Buffer loaded. Awaiting framing parameters.</p><p class="bytes">7e 52 57 44 2d 31 39 38 37 2d 30 34 7e 00 ff 31 30 31 30 31 31 30...</p></div>
+  </article>
+
+  <article class="panel recovered" id="recovered" hidden>
+    <div class="bar"><span>FRAME RECOVERED</span><span>CRC OK</span></div>
+    <div class="payload">
+      <h2>The signal was already seven seconds early in 1987.</h2>
+      <p>The reconstructed FSK frame matches the pre-G-7 municipal event: a receiver at the North Feed test yard captured a response before the source tape reached the corresponding speech.</p>
+      <div class="facts">
+        <div><span>MARK / SPACE</span><strong>1200 / 2200 Hz</strong></div>
+        <div><span>FRAMING</span><strong>300 BAUD / NORMAL</strong></div>
+        <div><span>TIME OFFSET</span><strong>+00:00:07</strong></div>
+      </div>
+      <code>RWD-1987-04 // NORTH FEED // LOOP RETURN PRECEDES SOURCE // MOVE EXPERIMENT SOUTH // G-SERIES</code>
+      <a class="next" href="../old-index/1987.html">OPEN 1987 INDEX RECORD</a>
+    </div>
+  </article>
+</section>
+<footer><span>SIGNAL LAB // STATIC EMULATION</span><span>NO LIVE RADIO HARDWARE REQUIRED</span></footer>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),els={mark:$("#mark"),space:$("#space"),baud:$("#baud"),pol:$("#polarity"),sync:$("#sync"),syncOut:$("#syncOut"),quality:$("#quality"),meter:$("#meter"),listen:$("#listen"),decode:$("#decode"),term:$("#terminal"),state:$("#decodeState"),scopeState:$("#scopeState"),recovered:$("#recovered"),scope:$("#scope")};
+const KEY="echo1.phase1.state.v1";let audio=null,playing=false;
+function score(){
+ let q=0;
+ if(els.mark.value==="1200")q+=27;
+ if(els.space.value==="2200")q+=27;
+ if(els.baud.value==="300")q+=24;
+ if(els.pol.value==="normal")q+=14;
+ q+=Math.max(0,8-Math.abs(+els.sync.value));
+ return Math.max(0,Math.min(100,q));
+}
+function update(){const q=score();els.syncOut.textContent=els.sync.value;els.quality.textContent=q+"%";els.meter.style.width=q+"%";els.scopeState.textContent=q>=96?"FRAME LOCK":q>=72?"PARTIAL LOCK":"UNLOCKED"}
+[els.mark,els.space,els.baud,els.pol,els.sync].forEach(e=>e.addEventListener("input",update));
+function line(t,cl=""){const p=document.createElement("p");if(cl)p.className=cl;p.textContent=t;els.term.appendChild(p);els.term.scrollTop=els.term.scrollHeight}
+async function ctx(){if(audio)return audio;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;audio=new AC();if(audio.state==="suspended")await audio.resume();return audio}
+async function playTones(){
+ const a=await ctx();if(!a||playing)return;playing=true;els.listen.disabled=true;const master=a.createGain();master.gain.value=.07;master.connect(a.destination);const start=a.currentTime+.05;
+ const bits="01111110010100100101011101000100001011010011000100111001001110000011011100101101001100000011010001111110";
+ bits.split("").forEach((b,i)=>{const o=a.createOscillator(),g=a.createGain(),t=start+i*.027;o.frequency.value=b==="1"?+els.mark.value:+els.space.value;o.type="sine";g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.14,t+.003);g.gain.setValueAtTime(.14,t+.021);g.gain.linearRampToValueAtTime(.001,t+.026);o.connect(g).connect(master);o.start(t);o.stop(t+.028)});
+ setTimeout(()=>{playing=false;els.listen.disabled=false},bits.length*27+200)
+}
+els.listen.onclick=playTones;
+els.decode.onclick=()=>{
+ const q=score();line("DEMOD START // SCORE "+q+"%","dim");
+ if(q>=96){
+   els.state.textContent="FRAME OK";line("FLAG 0x7E // SYNC ACQUIRED","ok");line("ASCII: RWD-1987-04 / NORTH FEED","ok");line("CLOCK DELTA: +00:00:07","ok");line("MESSAGE: LOOP RETURN PRECEDES SOURCE","ok");line("ROUTING NOTE: MOVE EXPERIMENT SOUTH / G-SERIES","ok");els.recovered.hidden=false;
+   try{const p=JSON.parse(localStorage.getItem(KEY)||"{}");p.discovered=p.discovered||{};p.discovered.signalLab=true;localStorage.setItem(KEY,JSON.stringify(p))}catch{}
+   setTimeout(()=>els.recovered.scrollIntoView({behavior:"smooth",block:"start"}),250);
+ }else if(q>=70){els.state.textContent="CRC FAIL";line("PARTIAL FRAME // BIT SLIP DETECTED","bad");line("52 57 44 2d ?? ?? 38 37 // ...","dim")}
+ else{els.state.textContent="NO FRAME";line("CARRIER DETECTED // FRAMING INVALID","bad")}
+};
+const x=els.scope.getContext("2d");function draw(ts){requestAnimationFrame(draw);const w=els.scope.width,h=els.scope.height,q=score()/100;x.fillStyle="rgba(1,3,4,.20)";x.fillRect(0,0,w,h);const freqs=[1200,2200];freqs.forEach((f,idx)=>{const yy=h-(f/3000)*h;x.strokeStyle=idx===0?"rgba(110,205,224,.65)":"rgba(184,118,115,.55)";x.lineWidth=2;x.beginPath();for(let i=0;i<w;i++){const t=i/47+ts/650;const y=yy+Math.sin(t*(idx?1.7:1.2))*9+(Math.random()-.5)*(1-q)*16;i?x.lineTo(i,y):x.moveTo(i,y)}x.stroke()});if(q>0.9){x.fillStyle="rgba(204,241,245,.18)";for(let i=0;i<12;i++)x.fillRect((i*83+ts/20)%w,0,2,h)}}requestAnimationFrame(draw);update();
+})();
+</script>
+</body>
+</html>
