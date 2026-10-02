@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#050706" />
+  <meta name="description" content="ECHO-1: The Lost Frequency — tune into the horror." />
+  <title>ECHO-1 // LOST FREQUENCY</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- RWD-RF/ARCHIVE MIRROR: carrier ledger moved after incident G-7. -->
+  <!-- 17 01 22 05 14 19 23 15 15 04 / 04 15 05 19 / 14 15 20 / 19 12 05 05 16 -->
+  <div class="noise-layer" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">RAVENSWOOD COMMUNITY BAND MONITOR</p>
+        <h1>ECHO-1 <span>// LOST FREQUENCY</span></h1>
+      </div>
+      <div class="status-pill" id="systemStatus">
+        <span class="status-dot"></span>
+        <span id="systemStatusText">SCANNING</span>
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="panel radio-panel">
+        <div class="panel-head">
+          <span>RF RECEIVER / RX-17</span>
+          <span id="clock">--:--:--</span>
+        </div>
+
+        <div class="frequency-wrap">
+          <div class="frequency-readout" aria-live="polite">
+            <span id="frequency">96.7</span>
+            <small>MHz</small>
+          </div>
+          <div class="channel-label" id="channelLabel">NO IDENT</div>
+        </div>
+
+        <div class="meter" aria-label="signal strength">
+          <div class="meter-scale"><span>0</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100</span></div>
+          <div class="meter-track"><div class="meter-fill" id="signalFill"></div></div>
+          <div class="meter-caption"><span>SIGNAL</span><span id="signalText">0%</span></div>
+        </div>
+
+        <label class="tuner-label" for="tuner">FREQUENCY CONTROL</label>
+        <input id="tuner" class="tuner" type="range" min="875" max="1080" step="1" value="967" aria-label="FM frequency tuner" />
+
+        <div class="controls">
+          <button id="stepDown" class="btn" type="button">− 0.1</button>
+          <button id="powerBtn" class="btn primary" type="button">POWER</button>
+          <button id="stepUp" class="btn" type="button">+ 0.1</button>
+        </div>
+
+        <div class="controls secondary">
+          <button id="scanBtn" class="btn" type="button">AUTO SCAN</button>
+          <button id="captureBtn" class="btn" type="button" disabled>CAPTURE</button>
+          <button id="muteBtn" class="btn" type="button">MUTE</button>
+        </div>
+
+        <p class="microcopy">Receiver memory is volatile. Captures are stored locally on this device.</p>
+      </article>
+
+      <article class="panel scope-panel">
+        <div class="panel-head">
+          <span>SPECTRAL WATERFALL / CH-A</span>
+          <span id="scopeMode">IDLE</span>
+        </div>
+        <div class="scope-frame">
+          <canvas id="waterfall" width="900" height="420" aria-label="radio waterfall display"></canvas>
+          <div class="scope-grid" aria-hidden="true"></div>
+          <div class="scope-centerline" aria-hidden="true"></div>
+        </div>
+        <div class="scope-footer">
+          <span>87.5</span><span>96.0</span><span>101.1</span><span>108.0</span>
+        </div>
+      </article>
+
+      <article class="panel transcript-panel">
+        <div class="panel-head">
+          <span>RECEIVER TRANSCRIPT</span>
+          <button class="text-btn" id="clearTranscript" type="button">CLEAR</button>
+        </div>
+        <div id="transcript" class="transcript" aria-live="polite">
+          <p><span class="time">[--:--:--]</span> receiver offline</p>
+        </div>
+      </article>
+
+      <article class="panel archive-panel">
+        <div class="panel-head">
+          <span>LOCAL ARCHIVE</span>
+          <span id="captureCount">0 CAPTURES</span>
+        </div>
+        <div id="captures" class="captures empty">
+          <p>No recoverable transmissions.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel terminal-panel">
+      <div class="panel-head">
+        <span>RAVENSWOOD ARCHIVE TERMINAL // READ-ONLY</span>
+        <span id="terminalState">LOCKED</span>
+      </div>
+      <div class="terminal-screen">
+        <div id="terminalOutput" class="terminal-output">
+          <p>RWD MUNICIPAL ARCHIVE GATEWAY</p>
+          <p>NODE: EAST-RELAY-04</p>
+          <p>STATUS: INDEX DAMAGED</p>
+          <p>Enter an archive command.</p>
+        </div>
+        <form id="terminalForm" class="terminal-form" autocomplete="off">
+          <span>&gt;</span>
+          <input id="terminalInput" aria-label="archive terminal command" spellcheck="false" maxlength="64" />
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <span>ECHO-1 / BUILD 0.1</span>
+      <span>RAVENSWOOD, [DATA WITHHELD]</span>
+    </footer>
+  </main>
+
+  <noscript>This receiver requires JavaScript.</noscript>
+  <script src="app.js"></script>
+</body>
+</html>
