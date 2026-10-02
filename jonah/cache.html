@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#ece9d8">
+<title>Offline Cache Viewer</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#63748a;font-family:Tahoma,Verdana,Arial,sans-serif;color:#151515}.browser{width:min(1080px,calc(100% - 20px));margin:10px auto;background:#ece9d8;border:2px outset #fff;box-shadow:0 12px 40px rgba(0,0,0,.35)}.titlebar{background:linear-gradient(90deg,#153b7a,#5d83b5);color:#fff;font-weight:bold;padding:6px 8px;font-size:12px}.toolbar{display:flex;gap:6px;padding:7px;border-bottom:1px solid #aaa}.toolbar button{border:2px outset #fff;background:#d5d8dc;padding:5px 10px}.address{display:flex;gap:5px;padding:5px 7px;background:#ddd;border-bottom:1px solid #aaa;font-size:12px;align-items:center}.address input{flex:1;border:2px inset #fff;padding:4px;font-family:"Courier New",monospace}.content{background:#fff;min-height:650px;display:grid;grid-template-columns:230px 1fr}.sidebar{background:#f0f1f3;border-right:1px solid #aaa;padding:12px;font-size:12px}.sidebar h3{font-size:12px;margin:0 0 8px}.snapshot{display:block;width:100%;text-align:left;border:0;background:transparent;padding:7px 5px;cursor:pointer}.snapshot:hover,.snapshot.active{background:#1e4f91;color:#fff}.page{padding:22px;min-width:0}.forum-head{border-bottom:3px solid #233b5b;margin-bottom:14px}.forum-head h1{font:28px Georgia,serif;color:#233b5b;margin:0}.forum-head p{font-size:12px;color:#666}.notice{background:#fff4c8;border:1px solid #c7ad55;padding:9px;font-size:12px}.thread{border:1px solid #adb7c4;margin:11px 0}.thread h2{font-size:14px;background:#dce4ef;margin:0;padding:8px;color:#203f68}.post{display:grid;grid-template-columns:130px 1fr;border-top:1px solid #ccd2da;min-height:105px}.user{background:#eef2f6;padding:9px;font-size:11px}.user b{display:block;color:#254d80;margin-bottom:5px}.msg{padding:10px;font:13px/1.45 Verdana,Arial,sans-serif}.msg time{display:block;color:#777;font-size:10px;margin-bottom:8px}.deleted{color:#777;font-style:italic}.cache-tool{border:1px solid #888;background:#e8e8e8;padding:12px;margin-top:20px}.cache-tool h3{margin:0 0 6px;font-size:13px}.cache-tool>p{font-size:11px;color:#555}.chunks{display:grid;gap:5px}.chunk{display:grid;grid-template-columns:66px 1fr 70px;align-items:center;gap:8px;background:#0f1319;color:#9fd3a9;padding:7px;font:11px "Courier New",monospace}.chunk code{overflow:hidden;text-overflow:ellipsis}.chunk button{font:10px Tahoma;border:1px solid #777;background:#ddd;padding:3px}.result{margin-top:10px;background:#fff;border:2px inset #ddd;padding:10px;font:12px "Courier New",monospace;min-height:54px;white-space:pre-wrap}.ok{color:#145f2a}.bad{color:#8f1d17}.status{border-top:1px solid #aaa;padding:4px 7px;font-size:10px;background:#ddd;color:#444}@media(max-width:700px){.content{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #aaa}.post{grid-template-columns:95px 1fr}.page{padding:10px}.chunk{grid-template-columns:58px 1fr}.chunk button{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<main class="browser">
+<div class="titlebar">Ravenswood Net Explorer — Offline Cache</div>
+<div class="toolbar"><button type="button">Back</button><button type="button">Forward</button><button type="button">Stop</button><button type="button">Refresh</button></div>
+<div class="address"><span>Address</span><input value="cache://J17/index.dat" readonly></div>
+<div class="content">
+  <aside class="sidebar">
+    <h3>Recovered snapshots</h3>
+    <button class="snapshot active" data-page="184">thread_184.htm</button>
+    <button class="snapshot" data-page="190">thread_190.htm</button>
+    <button class="snapshot" data-page="203">thread_203.htm</button>
+    <button class="snapshot" data-page="deleted">[deleted entry]</button>
+  </aside>
+  <section class="page" id="page"></section>
+</div>
+<div class="status" id="status">Local forensic copy. Network access disabled.</div>
+</main>
+<script>
+(() => {
+const $=q=>document.querySelector(q),page=$("#page"),status=$("#status");
+const pages={
+184:`<div class="forum-head"><h1>Ravenswood Relay Watch</h1><p>Community radio, scanners, utility relays, and local reception reports.</p></div><div class="notice">Archived copy from J-17 browser cache. Some images and user records are unavailable.</div><article class="thread"><h2>Anyone else hearing 101.1 after midnight?</h2><div class="post"><div class="user"><b>coilburner</b>Member</div><div class="msg"><time>09/11 23:48</time>Dead air here. My receiver shows a carrier for maybe two seconds and then drops.</div></div><div class="post"><div class="user"><b>northstar17</b>New Member</div><div class="msg"><time>09/12 00:17</time>It doesn't drop if you take the antenna off.</div></div><div class="post"><div class="user"><b>phase_shift</b>Member</div><div class="msg"><time>09/12 00:20</time>That's not how RF works.</div></div><div class="post"><div class="user"><b>northstar17</b>New Member</div><div class="msg"><time>09/12 00:24</time>I know.</div></div></article>`,
+190:`<div class="forum-head"><h1>Ravenswood Relay Watch</h1><p>Thread archive</p></div><article class="thread"><h2>Old municipal diagrams?</h2><div class="post"><div class="user"><b>northstar17</b>New Member</div><div class="msg"><time>09/15 18:02</time>Does anyone have utility maps older than the East District rebuild? Looking for a service parcel marked G-7.</div></div><div class="post"><div class="user"><b>civband</b>Moderator</div><div class="msg"><time>09/15 18:41</time>G-series repeater sites were decommissioned years ago. Check the library microfilm desk.</div></div><div class="post"><div class="user"><b>[account missing]</b></div><div class="msg deleted"><time>09/15 18:44</time>[post unavailable in server archive]</div></div></article>`,
+203:`<div class="forum-head"><h1>Ravenswood Relay Watch</h1><p>Thread archive</p></div><article class="thread"><h2>Moderator note</h2><div class="post"><div class="user"><b>civband</b>Moderator</div><div class="msg"><time>09/18 08:12</time>User northstar17's recent thread was removed after the cached page began returning malformed content. This was not a moderation action.</div></div><div class="post"><div class="user"><b>phase_shift</b>Member</div><div class="msg"><time>09/18 08:51</time>His profile says he hasn't logged in since the 17th.</div></div></article>`
+};
+const original=[
+ {off:"0000",data:"3c61727469636c6520636c6173733d22746872656164223e"},
+ {off:"0030",data:"3c68323e49207265636f7264656420746865207365636f6e64"},
+ {off:"0060",data:"20766f6963652e3c2f68323e3c703e4865726d616e20686561"},
+ {off:"0090",data:"726420697420746f6f2e204865206c6965642061626f757420"},
+ {off:"00c0",data:"69742e3c2f703e3c703e2f7277642f6d6963726f66696c6d"},
+ {off:"00f0",data:"2f3931372e68746d6c3c2f703e3c2f61727469636c653e"}
+];
+let chunks=[original[3],original[0],original[5],original[2],original[4],original[1]].map(x=>({...x}));
+function hexToAscii(hex){let out="";for(let i=0;i<hex.length;i+=2)out+=String.fromCharCode(parseInt(hex.slice(i,i+2),16));return out}
+function renderDeleted(){
+  page.innerHTML=`<div class="forum-head"><h1>Cache Reconstruction</h1><p>Deleted entry / partial object recovered from unallocated browser cache.</p></div><div class="cache-tool"><h3>HTTP OBJECT FRAGMENTS</h3><p>Reassemble the cached object by byte offset.</p><div class="chunks" id="chunks"></div><div class="result" id="result">Object incomplete.</div></div>`;
+  drawChunks();
+}
+function drawChunks(){
+ const box=$("#chunks");box.replaceChildren();
+ chunks.forEach((c,i)=>{const row=document.createElement("div");row.className="chunk";row.innerHTML=`<span>0x${c.off}</span><code>${c.data}</code><button type="button">MOVE ↑</button>`;row.querySelector("button").onclick=()=>{if(i>0){[chunks[i-1],chunks[i]]=[chunks[i],chunks[i-1]];drawChunks();check()}};box.appendChild(row)});check()
+}
+function check(){
+ const r=$("#result");if(!r)return;
+ const good=chunks.every((c,i)=>c.off===original[i].off);
+ if(!good){r.className="result bad";r.textContent="CRC mismatch. Object incomplete.";return}
+ const ascii=hexToAscii(chunks.map(c=>c.data).join(""));
+ const temp=document.createElement("div");temp.innerHTML=ascii;
+ r.className="result ok";r.textContent=temp.textContent+"\n\nRecovered path: /rwd/microfilm/917.html";
+ status.textContent="Deleted object reconstructed successfully.";
+ try{const k="echo1.phase1.state.v1",v=JSON.parse(localStorage.getItem(k)||"{}");v.discovered=v.discovered||{};v.discovered.cacheRebuilt=true;localStorage.setItem(k,JSON.stringify(v))}catch{}
+}
+function show(id){
+ document.querySelectorAll(".snapshot").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ if(id==="deleted"){renderDeleted();return}page.innerHTML=pages[id]||"<p>Snapshot unavailable.</p>"
+}
+document.querySelectorAll(".snapshot").forEach(b=>b.addEventListener("click",()=>show(b.dataset.page)));
+show("184");
+})();
+</script>
+</body>
+</html>
