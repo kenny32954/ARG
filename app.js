@@ -513,6 +513,7 @@
       if (state.archiveUnlocked) terminalPrint("  0023  CALL_ROUTER_LOG", "ok");
       if (state.archiveUnlocked) terminalPrint("  0024  MAIL_EVIDENCE", "ok");
       if (state.archiveUnlocked) terminalPrint("  0031  SIGNAL_LAB_1987", "ok");
+      if (state.discovered.signalLab) terminalPrint("  0032  SPECTRAL_RESIDUE", "ok");
       if (state.archiveUnlocked) terminalPrint("  0050  HERMAN_CASEBOARD", "ok");
       if (state.archiveUnlocked) terminalPrint("  0114  EAST_TOWER_2314", "ok");
       return;
@@ -595,6 +596,18 @@
       terminalDivider();
       state.discovered.caseboard = true;
       saveState();
+      return;
+    }
+    if (upper === "READ 0032" || upper === "READ SPECTRAL_RESIDUE") {
+      if (!state.discovered.signalLab) {
+        terminalPrint("FILE NOT FOUND", "error");
+        return;
+      }
+      terminalDivider();
+      terminalPrint("AUXILIARY SPECTRAL CHANNEL // RWD-1987-04");
+      terminalPrint("IMAGE RECONSTRUCTION BENCH: /ARG/spectral/index.html", "ok");
+      terminalPrint("SOURCE CLASS: NONSPEECH / FREQUENCY-DOMAIN RESIDUE.");
+      terminalDivider();
       return;
     }
     if (upper === "READ 0041") {
