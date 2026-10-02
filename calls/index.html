@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<title>HERMAN // CALL ARCHIVE</title>
+<style>
+:root{--bg:#080808;--phone:#171816;--line:#41453f;--text:#c7cec5;--muted:#727970;--green:#7fad89;--red:#b95550}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 10%,#252724,#090909 55%);color:var(--text);font-family:"Courier New",monospace;display:grid;place-items:center;padding:16px}.wrap{width:min(920px,100%);display:grid;grid-template-columns:minmax(280px,.75fr) minmax(0,1.25fr);gap:12px}.phone,.archive{border:1px solid var(--line);background:linear-gradient(#181916,#10110f);border-radius:7px;overflow:hidden;box-shadow:0 12px 45px #000}.bar{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);font-size:.6rem;color:var(--muted)}.handset{padding:18px}.screen{background:#a5b59f;color:#20251f;border:4px inset #3b4039;padding:12px;min-height:142px;font-family:"Courier New",monospace}.screen .small{font-size:.58rem}.screen .big{font-size:1.05rem;margin:12px 0}.screen .status{font-size:.67rem}.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:13px}.keypad button{height:45px;border:2px outset #343833;background:#20221f;color:#c8cec6;font:inherit}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.actions button{border:1px solid #414940;padding:10px;font:inherit;color:#d7ded5;background:#171a17}.actions .answer{border-color:#365e41;color:#a8d9b1}.actions .hang{border-color:#653632;color:#d98d87}.log{padding:10px;height:480px;overflow:auto}.call{border:1px solid #353a34;margin-bottom:8px;padding:10px;background:#121310;cursor:pointer}.call:hover,.call.active{border-color:#697267;background:#1b1d19}.call h3{margin:0 0 4px;font-size:.68rem}.call p{margin:0;color:#777f76;font-size:.58rem}.detail{padding:14px;border-top:1px solid var(--line);min-height:180px;line-height:1.55;font-size:.66rem}.detail .speaker{color:#7d897e}.detail blockquote{font-family:Georgia,serif;font-size:.98rem;margin:9px 0;padding-left:10px;border-left:2px solid #5f3532;color:#d8c4c1}.detail .meta{color:#667068;font-size:.58rem}.sim{grid-column:1/-1;color:#555d56;text-align:center;font-size:.55rem;padding-top:3px}@media(max-width:720px){.wrap{grid-template-columns:1fr}.log{height:260px}.sim{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="phone">
+  <div class="bar"><span>RWD LANDLINE EMULATOR</span><span id="lineState">IDLE</span></div>
+  <div class="handset">
+    <div class="screen"><div class="small">LINE 04 / HERMAN</div><div class="big" id="number">NO CALL</div><div class="status" id="status">00:03 archive ready</div></div>
+    <div class="keypad" id="keypad"></div>
+    <div class="actions"><button class="answer" id="answer" type="button">ANSWER ARCHIVE</button><button class="hang" id="hang" type="button">HANG UP</button></div>
+  </div>
+</section>
+<section class="archive">
+  <div class="bar"><span>RECOVERED CALL EVENTS</span><span id="count">0 RECORDS</span></div>
+  <div class="log" id="log"></div>
+  <div class="detail" id="detail"><span class="meta">Select a call event.</span></div>
+</section>
+<div class="sim">SIMULATED CALL ARCHIVE — NO REAL TELEPHONE CONNECTION</div>
+</div>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),P1="echo1.phase1.state.v1",KEY="echo1.calls.v1";
+const els={line:$("#lineState"),num:$("#number"),status:$("#status"),answer:$("#answer"),hang:$("#hang"),log:$("#log"),detail:$("#detail"),count:$("#count"),keys:$("#keypad")};
+const base=[
+ {id:"C-0003",time:"00:03:11",from:"NO ROUTE",unlock:()=>true,lines:[["UNKNOWN","Herman."],["UNKNOWN","Stop looking for him."],["UNKNOWN","The frequency is not where you think it is."]],meta:"No inbound routing record. Audio path attributed to J-17 internal modem."},
+ {id:"C-G7",time:"23:21:04",from:"EXT 0000",unlock:p=>p.g7Fix,lines:[["UNKNOWN","You found G-seven."],["UNKNOWN","There was never a transmitter there."],["UNKNOWN","So what exactly did you tune in to?"]],meta:"Call event appears in local archive after G-7 triangulation."},
+ {id:"C-R3",time:"23:31:17",from:"LINE 03",unlock:p=>p.room3,lines:[["MARA-04","Herman, you always hated when I kept secrets."],["HERMAN","Mara?"],["MARA-04","Which recording of me are you asking?"]],meta:"Voiceprint later correlates with MARA-04."},
+ {id:"C-B04",time:"23:44:50",from:"NO ROUTE",unlock:p=>p.broadcaster,lines:[["MARA-04","You know what I am now."],["MARA-04","Knowing has never made you stop listening."]],meta:"Generated phrase has no matching source tape."}
+];
+let calls=[],selected=null,audio=null;
+for(const k of ["1","2","3","4","5","6","7","8","9","*","0","#"]){const b=document.createElement("button");b.textContent=k;b.type="button";b.onclick=()=>beep(220+(k.charCodeAt(0)%12)*33,.06);els.keys.appendChild(b)}
+function progress(){try{return JSON.parse(localStorage.getItem(P1)||"{}").discovered||{}}catch{return{}}}
+function load(){const p=progress();calls=base.filter(c=>c.unlock(p));els.count.textContent=calls.length+" RECORD"+(calls.length===1?"":"S");renderLog();if(calls[0])show(calls[0])}
+function renderLog(){els.log.replaceChildren();calls.forEach(c=>{const d=document.createElement("div");d.className="call"+(selected===c.id?" active":"");d.innerHTML=`<h3>${c.id} / ${c.from}</h3><p>${c.time}</p>`;d.onclick=()=>show(c);els.log.appendChild(d)})}
+function show(c){selected=c.id;renderLog();els.num.textContent=c.from;els.status.textContent=c.time+" / READY";els.detail.replaceChildren();const m=document.createElement("div");m.className="meta";m.textContent=c.meta;els.detail.appendChild(m);c.lines.forEach(([s,t])=>{const sp=document.createElement("div");sp.className="speaker";sp.textContent=s;const q=document.createElement("blockquote");q.textContent="“"+t+"”";els.detail.append(sp,q)})}
+async function ctx(){if(audio)return audio;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;audio=new AC();if(audio.state==="suspended")await audio.resume();return audio}
+async function beep(f,d=.12){const a=await ctx();if(!a)return;const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.value=.05;o.connect(g).connect(a.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.stop(a.currentTime+d)}
+els.answer.onclick=async()=>{if(!selected)return;els.line.textContent="PLAYBACK";els.status.textContent="ARCHIVE CHANNEL OPEN";await beep(660,.15);setTimeout(()=>beep(440,.1),180);try{const s=JSON.parse(localStorage.getItem(KEY)||"{}");s[selected]=true;localStorage.setItem(KEY,JSON.stringify(s))}catch{}};
+els.hang.onclick=()=>{els.line.textContent="IDLE";els.status.textContent="ARCHIVE CLOSED";beep(180,.08)};
+load();
+})();
+</script>
+</body>
+</html>
