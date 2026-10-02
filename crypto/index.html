@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090807">
+<title>RWD CRYPTO DESK // PACKET 6</title>
+<style>
+:root{--bg:#080706;--panel:#12100d;--line:#4a402f;--text:#d1c4a3;--muted:#7e7155;--bright:#f1e2b8;--red:#b65a50;--green:#87b894}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(112,90,48,.18),transparent 45%),#080706;color:var(--text);font-family:"Courier New",monospace}.shell{width:min(1280px,calc(100% - 20px));margin:auto;padding:16px 0 30px}header{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;border-bottom:1px solid var(--line);padding:5px 2px 12px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.61rem}h1{margin:0;color:var(--bright);font-size:clamp(1.3rem,4vw,2rem)}.tag{border:1px solid var(--line);padding:7px 10px;color:var(--muted);font-size:.61rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.fragment,.packet{border:1px solid var(--line);background:linear-gradient(#14110e,#0d0b09);border-radius:4px;overflow:hidden}.bar{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:34px;padding:8px 10px;border-bottom:1px solid var(--line);background:#100e0b;color:var(--muted);font-size:.6rem}.body{padding:12px}.meta{display:grid;grid-template-columns:110px 1fr;gap:4px 10px;font-size:.56rem;color:#8a7d5d;margin-bottom:10px}.cipher{background:#070706;border:1px solid #342e22;color:#dbcba3;padding:11px;font-size:.67rem;line-height:1.55;word-break:break-all;min-height:85px;display:flex;align-items:center}.answer{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:9px}.answer input{min-width:0;background:#080706;border:1px solid #4b422f;color:var(--bright);padding:9px;font:inherit;text-transform:uppercase}.answer button{border:1px solid #514735;background:#17130f;color:var(--text);padding:9px 11px;font:inherit;font-size:.59rem}.status{font-size:.56rem;color:#776a50;margin-top:7px;min-height:1.2em}.status.ok{color:#9dc7a4}.status.bad{color:#d47d73}.fragment.solved{border-color:#55705b}.fragment.solved .bar{color:#a8c8aa}.packet{grid-column:1/-1}.packet-body{padding:18px;line-height:1.55}.packet-body h2{margin:0 0 9px;color:var(--bright);font-size:1rem}.packet-body dl{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 15px}.packet-body dl div{border:1px solid #443a2b;padding:9px}.packet-body dt{font-size:.53rem;color:var(--muted);margin-bottom:4px}.packet-body dd{margin:0;font-size:.65rem;color:#e0d2ae}.paper{margin-top:14px;background:#d4c9a8;color:#28231a;padding:16px;font-family:Georgia,serif;line-height:1.6;box-shadow:0 8px 22px #000}.paper p{margin:0 0 11px}.sig{font-style:italic}.progress{margin-top:9px;height:13px;border:1px solid #4a402f;padding:2px;background:#070605}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#5a4f30,#91b78a);transition:width .2s}footer{display:flex;justify-content:space-between;gap:12px;color:#5f533e;font-size:.54rem;padding:12px 2px 0}@media(max-width:760px){.grid{grid-template-columns:1fr}.packet{grid-column:auto}.packet-body dl{grid-template-columns:1fr}}@media(max-width:500px){header{flex-direction:column;align-items:flex-start}.tag{align-self:flex-end}.answer{grid-template-columns:1fr}.meta{grid-template-columns:90px 1fr}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><p>RWD ARCHIVE / HAND-ENCODED MAINTENANCE RESIDUE</p><h1>CRYPTO DESK // PACKET 6</h1></div><div class="tag">4 FRAGMENTS / HASH VERIFY</div></header>
+<section class="grid" id="grid"></section>
+<footer><span>CRYPTO DESK // LOCAL VERIFICATION</span><span>PLAINTEXT NOT STORED IN PAGE SOURCE</span></footer>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),grid=$("#grid"),P1="echo1.phase1.state.v1",SAVE="echo1.crypto.packet6.v1";
+const frags=[
+ {id:"A",meta:[["SOURCE","rotary maintenance index"],["MARGIN","07"],["DATE","unreadable"]],cipher:"AOL SVVW OLHYK BZ ILMVYL DL ZWVRL",hash:"a2326a464186e7ca053e60b1ab38f4c3f49b83a97fc76f7d431dbe69067c38b1"},
+ {id:"B",meta:[["SOURCE","Vale archive slip"],["FAMILY TAG","MARA"],["KEY FIELD","4 characters"]],cipher:"VOEAT FFUZD KHQ SVCANU VAITE",hash:"63a52d21be1d934639c8d8072de1aca615d50e85ffbb4ee071a557c855433d6e"},
+ {id:"C",meta:[["SOURCE","track reconstruction"],["GUIDE","rail / 3"],["SPACING","removed"]],cipher:"RTENRTOMHEWSEEEPYORAVM",hash:"0945eca61f52e9d2bbaf7a1f1ef94bc3759ed476f5f9ad83481a276aa4f07786"},
+ {id:"D",meta:[["SOURCE","teleprinter residue"],["FORMAT","8-bit groups"],["YEAR","1987"]],cipher:"01001000 01000001 01001100 01000101 00100000 01001101 01001111 01010110 01000101 01000100 00100000 01001100 01001111 01001111 01010000 00100000 01010011 01001111 01010101 01010100 01001000 00100000 01001001 01001110 00100000 00110001 00111001 00111000 00110111",hash:"bcc6c7260eda69810a5697295b0e34327a43000f63d9424a7625377b0c059335"}
+];
+let solved=new Set();try{(JSON.parse(localStorage.getItem(SAVE)||"{}").solved||[]).forEach(x=>solved.add(x))}catch{}
+function norm(v){return v.trim().toUpperCase().replace(/s+/g," ")}
+async function sha(v){const b=new TextEncoder().encode(norm(v)),h=await crypto.subtle.digest("SHA-256",b);return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+function save(){localStorage.setItem(SAVE,JSON.stringify({solved:[...solved]}));if(solved.size===frags.length){try{const p=JSON.parse(localStorage.getItem(P1)||"{}");p.discovered=p.discovered||{};p.discovered.cryptoPacket6=true;localStorage.setItem(P1,JSON.stringify(p))}catch{}}}
+function render(){
+ grid.replaceChildren();
+ frags.forEach(f=>{
+  const card=document.createElement("article");card.className="fragment"+(solved.has(f.id)?" solved":"");
+  const bar=document.createElement("div");bar.className="bar";bar.innerHTML=`<span>FRAGMENT ${f.id}</span><span>${solved.has(f.id)?"VERIFIED":"UNRESOLVED"}</span>`;
+  const body=document.createElement("div");body.className="body";const meta=document.createElement("div");meta.className="meta";f.meta.forEach(([a,b])=>{const x=document.createElement("span");x.textContent=a;const y=document.createElement("span");y.textContent=b;meta.append(x,y)});
+  const cipher=document.createElement("div");cipher.className="cipher";cipher.textContent=f.cipher;
+  const ans=document.createElement("div");ans.className="answer";const input=document.createElement("input");input.placeholder="RECOVERED PLAINTEXT";input.autocomplete="off";input.spellcheck=false;if(solved.has(f.id)){input.value="VERIFIED";input.disabled=true}
+  const btn=document.createElement("button");btn.textContent=solved.has(f.id)?"LOCKED":"VERIFY";btn.disabled=solved.has(f.id);const st=document.createElement("div");st.className="status";st.textContent=solved.has(f.id)?"PLAINTEXT HASH MATCHED.":"";
+  btn.onclick=async()=>{const h=await sha(input.value);if(h===f.hash){solved.add(f.id);save();render()}else{st.textContent="HASH MISMATCH.";st.className="status bad"}};
+  ans.append(input,btn);body.append(meta,cipher,ans,st);card.append(bar,body);grid.appendChild(card)
+ });
+ const packet=document.createElement("article");packet.className="packet";const pct=solved.size/frags.length*100;packet.innerHTML=`<div class="bar"><span>SEALED PACKET</span><span>${solved.size} / ${frags.length}</span></div><div class="body"><div class="progress"><i style="width:${pct}%"></i></div></div>`;
+ if(solved.size===frags.length){
+  const wrap=document.createElement("div");wrap.className="packet-body";
+  wrap.innerHTML=`<h2>Packet 6 released.</h2><p>The four fragments are maintenance warnings copied across decades by people who expected the official records to be altered or removed.</p><dl><div><dt>EARLIEST AUTHOR</dt><dd>A. HALE / 1987</dd></div><div><dt>LATER LINK</dt><dd>MARA VALE / G-7</dd></div><div><dt>COMMON SUBJECT</dt><dd>BURIED LOOP RETURN</dd></div><div><dt>REPEATED CONDITION</dt><dd>RESPONSE BEFORE SOURCE</dd></div></dl><div class="paper"><p>If these pages survive, do not treat the return as a recording system. A recording cannot contain what has not been spoken.</p><p>The safest assumption is that listening is part of the circuit.</p><p class="sig">— copied from an unsigned maintenance packet</p></div>`;
+  packet.appendChild(wrap)
+ }
+ grid.appendChild(packet)
+}
+render();
+})();
+</script>
+</body>
+</html>
