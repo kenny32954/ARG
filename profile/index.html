@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0b0c">
+<title>H-04 // BROADCASTER PROFILE</title>
+<style>
+:root{--bg:#080a0b;--panel:#0e1214;--line:#293b42;--text:#b6ccd1;--muted:#607981;--bright:#e0f3f4;--red:#c36560;--green:#85bfa0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,rgba(65,95,104,.15),transparent 45%),#080a0b;color:var(--text);font-family:"Courier New",monospace;min-height:100vh}.shell{width:min(1320px,calc(100% - 20px));margin:auto;padding:16px 0 30px}header{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;border-bottom:1px solid var(--line);padding:5px 2px 12px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.61rem}h1{margin:0;color:var(--bright);font-size:clamp(1.3rem,4vw,2.05rem)}.tag{border:1px solid var(--line);padding:7px 10px;color:var(--muted);font-size:.61rem}.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(310px,.7fr);gap:12px}.panel{border:1px solid var(--line);background:linear-gradient(#0f1315,#0a0d0f);border-radius:5px;overflow:hidden}.bar{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:34px;padding:8px 10px;border-bottom:1px solid var(--line);background:#0b0f10;color:var(--muted);font-size:.62rem}.evidence{padding:10px;display:grid;gap:7px}.card{border:1px solid #23343a;background:#0a0e10;padding:10px}.card h3{font-size:.66rem;color:var(--bright);margin:0 0 5px}.card p{font-size:.6rem;line-height:1.45;color:#789198;margin:0 0 8px}.choices{display:flex;gap:5px;flex-wrap:wrap}.choices button{border:1px solid #31474f;background:#10171a;color:#8ba5ad;padding:5px 7px;font:inherit;font-size:.55rem;cursor:pointer}.choices button.selected{border-color:#789eaa;color:#e2f4f5;background:#172126}.choices button.good{border-color:#476e56;color:#a8d3b4}.choices button.bad{border-color:#693a38;color:#d78b86}.profile{padding:13px}.axis{margin-bottom:15px}.axis>div{display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);margin-bottom:4px}.track{height:12px;border:1px solid #2a3d43;padding:2px;background:#030405}.track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#385663,#8bc2cb);transition:width .25s}.summary{border-top:1px solid var(--line);padding-top:10px;margin-top:12px;font-size:.62rem;line-height:1.5}.summary p{margin:0 0 7px}.evaluate{width:100%;border:1px solid #3a5158;background:#101719;color:var(--text);padding:10px;font:inherit;font-size:.63rem;cursor:pointer}.evaluate:disabled{opacity:.35}.result{grid-column:1/-1}.result-body{padding:18px;line-height:1.55}.result-body h2{font-size:1rem;color:var(--bright);margin-top:0}.gridout{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.gridout div{border:1px solid var(--line);padding:9px}.gridout span{display:block;color:var(--muted);font-size:.53rem;margin-bottom:4px}.gridout strong{font-size:.65rem;font-weight:normal;color:var(--bright)}.next{display:inline-block;border:1px solid #613634;color:#d98480;text-decoration:none;padding:9px 11px;font-size:.64rem}footer{display:flex;justify-content:space-between;gap:12px;padding:12px 2px 0;color:#3a5057;font-size:.54rem}@media(max-width:830px){.layout{grid-template-columns:1fr}.result{grid-column:auto}.gridout{grid-template-columns:1fr 1fr}}@media(max-width:500px){header{flex-direction:column;align-items:flex-start}.tag{align-self:flex-end}.gridout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><p>HERMAN VALE / EVIDENCE SYNTHESIS</p><h1>BROADCASTER BEHAVIORAL PROFILE</h1></div><div class="tag">CASE MODEL H-04</div></header>
+<section class="layout">
+  <article class="panel">
+    <div class="bar"><span>EVIDENCE CLASSIFICATION</span><span id="count">0 / 8</span></div>
+    <div class="evidence" id="evidence"></div>
+  </article>
+  <aside class="panel">
+    <div class="bar"><span>LIVE HYPOTHESIS MODEL</span><span id="confidence">0%</span></div>
+    <div class="profile">
+      <div class="axis"><div><span>HUMAN OPERATOR</span><span id="humanOut">0%</span></div><div class="track"><i id="humanBar"></i></div></div>
+      <div class="axis"><div><span>AUTOMATED REPEATER</span><span id="autoOut">0%</span></div><div class="track"><i id="autoBar"></i></div></div>
+      <div class="axis"><div><span>ADAPTIVE ECHO PATTERN</span><span id="echoOut">0%</span></div><div class="track"><i id="echoBar"></i></div></div>
+      <div class="summary" id="summary"><p>Classify each observation by the hypothesis it most strongly supports.</p></div>
+      <button class="evaluate" id="evaluate" type="button" disabled>COMMIT PROFILE</button>
+    </div>
+  </aside>
+  <article class="panel result" id="result" hidden>
+    <div class="bar"><span>PROFILE ACCEPTED</span><span>MODEL E1-B</span></div>
+    <div class="result-body">
+      <h2>The Broadcaster behaves like an adaptive mimic, not a conventional operator.</h2>
+      <p>The evidence does not support a live person continuously controlling the carrier. It supports a persistent pattern that stores voices, recombines them, reacts to attention, and anticipates portions of the event stream.</p>
+      <div class="gridout">
+        <div><span>PRIMARY SOURCE</span><strong>ADAPTIVE ECHO</strong></div>
+        <div><span>INTERFACE</span><strong>RECORDED VOICES</strong></div>
+        <div><span>OBSERVED TRIGGER</span><strong>LISTENING / RESPONSE</strong></div>
+        <div><span>DOMINANT MODEL</span><strong>MARA-04</strong></div>
+      </div>
+      <p>The recovered Vale carbon copy contains the authentication key needed to compare the dominant voice model against the signal archive.</p>
+      <a class="next" href="../broadcaster/index.html">OPEN VOICEPRINT ARCHIVE</a>
+    </div>
+  </article>
+</section>
+<footer><span>PROFILE TOOL // FICTIONAL ANALYSIS</span><span>NO CLINICAL ASSESSMENT</span></footer>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),box=$("#evidence"),count=$("#count"),confidence=$("#confidence"),summary=$("#summary"),evaluate=$("#evaluate"),result=$("#result"),P1="echo1.phase1.state.v1";
+const rows=[
+ {id:"r1",title:"Carrier survives antenna removal",text:"J-17 and G-7 both record increasing signal after the RF feed is disconnected.",answer:"echo"},
+ {id:"r2",title:"No transmitter key event",text:"The receive chain becomes active without any corresponding transmit-chain event.",answer:"echo"},
+ {id:"r3",title:"Old speech repeats verbatim",text:"Early G-7 tests return recognizable fragments from analogue source tapes.",answer:"auto"},
+ {id:"r4",title:"New sentences in Mara's voice",text:"Later speech matches Mara's voiceprint but contains phrases absent from the archive.",answer:"echo"},
+ {id:"r5",title:"Messages address Herman personally",text:"The carrier selects names and details that are meaningful to Herman.",answer:"human"},
+ {id:"r6",title:"Responses precede prompts",text:"Mara reports replies beginning before her spoken prompt is complete.",answer:"echo"},
+ {id:"r7",title:"Voice bank contains Jonah fragments",text:"J-17 speech appears embedded after Jonah's disappearance.",answer:"echo"},
+ {id:"r8",title:"Routine replay behavior exists",text:"Some segments loop at identical timing and amplitude across sessions.",answer:"auto"}
+];
+const picks={};
+function render(){
+ box.replaceChildren();
+ rows.forEach(r=>{const c=document.createElement("div");c.className="card";c.innerHTML=`<h3>${r.title}</h3><p>${r.text}</p>`;const ch=document.createElement("div");ch.className="choices";[["human","HUMAN"],["auto","REPEATER"],["echo","ECHO"]].forEach(([id,label])=>{const b=document.createElement("button");b.type="button";b.textContent=label;if(picks[r.id]===id)b.classList.add("selected");b.onclick=()=>{picks[r.id]=id;render();update()};ch.appendChild(b)});c.appendChild(ch);box.appendChild(c)});
+ update();
+}
+function update(){
+ const n=Object.keys(picks).length;count.textContent=n+" / "+rows.length;evaluate.disabled=n!==rows.length;
+ const totals={human:0,auto:0,echo:0};Object.values(picks).forEach(v=>totals[v]++);
+ const denom=Math.max(1,n);for(const k of ["human","auto","echo"]){const p=Math.round(totals[k]/denom*100);$("#"+k+"Out").textContent=p+"%";$("#"+k+"Bar").style.width=p+"%"}
+ confidence.textContent=n===rows.length?Math.round(rows.filter(r=>picks[r.id]===r.answer).length/rows.length*100)+"%":Math.round(n/rows.length*100)+"%";
+}
+evaluate.onclick=()=>{
+ const score=rows.filter(r=>picks[r.id]===r.answer).length;
+ if(score>=6){
+   result.hidden=false;summary.innerHTML="<p>Evidence model converged on adaptive ECHO behavior.</p>";
+   [...box.children].forEach((card,i)=>{const buttons=card.querySelectorAll("button");buttons.forEach((b,j)=>{const id=["human","auto","echo"][j];if(id===rows[i].answer)b.classList.add("good");else if(picks[rows[i].id]===id)b.classList.add("bad")})});
+   try{const p=JSON.parse(localStorage.getItem(P1)||"{}");p.discovered=p.discovered||{};p.discovered.profile=true;localStorage.setItem(P1,JSON.stringify(p))}catch{}
+   setTimeout(()=>result.scrollIntoView({behavior:"smooth",block:"start"}),250);
+ } else {
+   summary.innerHTML="<p>Profile rejected: too many observations conflict with the selected source model. Reclassify the evidence.</p>";
+ }
+};
+render();
+})();
+</script>
+</body>
+</html>
