@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#15120d">
+<title>M. VALE // ARCHIVE SET</title>
+<style>
+:root{--bg:#15120d;--paper:#d6ceb4;--ink:#28251d;--red:#6f2d29;--line:#5e5848}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#2d271c,#15120d 50%);font-family:"Courier New",monospace;color:#ddd3b8;min-height:100vh}.shell{width:min(1200px,calc(100% - 20px));margin:auto;padding:18px 0 32px}header{display:flex;justify-content:space-between;align-items:end;gap:18px;border-bottom:1px solid #514a36;padding:5px 2px 12px;margin-bottom:12px}header p{margin:0 0 4px;color:#81775d;font-size:.62rem}h1{margin:0;font-size:clamp(1.35rem,4vw,2.1rem);color:#efe3c2}.boxid{border:1px solid #5b523c;padding:7px 10px;color:#988b6b;font-size:.62rem}.layout{display:grid;grid-template-columns:minmax(300px,.55fr) minmax(0,1.45fr);gap:12px}.panel{border:1px solid #514a36;background:#1c1811;border-radius:4px;overflow:hidden}.bar{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;border-bottom:1px solid #514a36;background:#18150f;color:#897e61;font-size:.62rem}.stack{padding:10px}.card{display:grid;grid-template-columns:1fr 74px;gap:8px;align-items:center;border:1px solid #514a36;background:#211d14;margin-bottom:7px;padding:9px;cursor:pointer}.card.active{border-color:#978762;background:#2b2519}.card b{display:block;color:#e1d5b3;font-size:.68rem}.card small{display:block;color:#7e7359;margin-top:4px}.card .move{display:grid;grid-template-columns:1fr 1fr;gap:3px}.card button{border:1px solid #5c543e;background:#17140e;color:#a99a75;font:inherit;padding:4px}.viewer{padding:14px;min-height:620px;background:#090806}.paper{background:var(--paper);color:var(--ink);min-height:570px;padding:clamp(20px,4vw,46px);box-shadow:0 6px 28px #000;position:relative;transform:rotate(-.15deg);font-family:Georgia,serif;line-height:1.62}.paper:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}.date{font:700 .75rem "Courier New",monospace;border-bottom:1px solid #7f7764;padding-bottom:6px;margin-bottom:20px}.paper p{margin:0 0 15px}.sig{margin-top:26px;font-style:italic}.stamp{position:absolute;right:24px;top:20px;border:2px solid rgba(111,45,41,.55);color:rgba(111,45,41,.7);padding:6px 8px;font:700 .65rem "Courier New";transform:rotate(3deg)}.status{padding:10px;font-size:.62rem;line-height:1.5;color:#8d8264}.status.ok{color:#c9b982}.carbon{grid-column:1/-1}.carbon-body{background:#c4b88e;color:#221f18;padding:22px;font-family:"Courier New",monospace;line-height:1.5}.carbon-body h2{font-size:.95rem;border-bottom:2px solid #3f392c;padding-bottom:6px}.carbon-body .red{color:#762c28}.carbon-body code{display:block;background:#16140f;color:#d9cca6;padding:10px;word-break:break-all;margin-top:12px}footer{display:flex;justify-content:space-between;gap:12px;color:#645b45;font-size:.55rem;padding:12px 2px 0}@media(max-width:800px){.layout{grid-template-columns:1fr}.viewer{min-height:auto}.paper{min-height:500px}.carbon{grid-column:auto}}@media(max-width:500px){header{flex-direction:column;align-items:flex-start}.boxid{align-self:flex-end}.card{grid-template-columns:1fr 64px}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><p>PRIVATE PAPERS / MUNICIPAL SEIZURE COPY</p><h1>M. VALE — ARCHIVE SET</h1></div><div class="boxid">BOX 7 / FOLDER 3</div></header>
+<section class="layout">
+  <aside class="panel">
+    <div class="bar"><span>DOCUMENT ORDER</span><span id="orderState">UNSORTED</span></div>
+    <div class="stack" id="stack"></div>
+    <div class="status" id="status">The folder was recovered out of sequence. Preserve chronological order before reviewing the carbon copy.</div>
+  </aside>
+  <article class="panel">
+    <div class="bar"><span>DOCUMENT VIEWER</span><span id="docId">—</span></div>
+    <div class="viewer"><div class="paper" id="paper"></div></div>
+  </article>
+  <article class="panel carbon" id="carbon" hidden>
+    <div class="bar"><span>CARBON COPY / NOT IN INDEX</span><span>09-17</span></div>
+    <div class="carbon-body">
+      <h2>UNSENT — M. VALE TO HERMAN VALE</h2>
+      <p>Herman, I need you to understand this before you decide I was hiding it from you because I didn't trust you.</p>
+      <p>I reopened Room 3. The loop was the only thing we built that could preserve a voice after the source was gone. At first it only repeated recordings. Then it began answering questions that were never on the tapes.</p>
+      <p>Jonah heard it because I let him help catalog the old reels. I told him the extra voice was bleed-through. I knew that was a lie.</p>
+      <p class="red">ECHO-1 is not a transmitter. It is the name I gave the pattern when it began choosing what to repeat.</p>
+      <p>If you hear my voice on 101.1 after tonight, do not assume it is me.</p>
+      <p>— Mara</p>
+      <code>42524f4144434153544552204b4559202f204d4152412d3034</code>
+    </div>
+  </article>
+</section>
+<footer><span>ARCHIVE SET // FICTIONAL RECORD</span><span>CHAIN OF CUSTODY 7-3</span></footer>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),stack=$("#stack"),paper=$("#paper"),state=$("#orderState"),status=$("#status"),carbon=$("#carbon"),docId=$("#docId");
+const KEY="echo1.phase1.state.v1";
+const docs=[
+ {id:"V-0826",date:"08 / 26",sort:826,body:["Herman,","You asked why I took the municipal contract. It is boring work most days, but the old relay system is stranger than I expected. There is an annex on the drawings that no one in the office will discuss.","Tell Mom I will call Sunday. You do not need to keep checking on me.","— Mara"]},
+ {id:"V-0901",date:"09 / 01",sort:901,body:["Herman,","I found the annex. G-7. It was built as a receive site, not a station. Room 3 contains a buried loop that should be electrically dead.","The maintenance notes say it kept inducing current after the street service was cut. I know how that sounds.","— Mara"]},
+ {id:"V-0908",date:"09 / 08",sort:908,body:["Herman,","I ran one of Dad's old voice tapes through the loop. The return came back distorted, but it came back after I stopped the tape.","You would have told me not to try it. That is probably why I did not tell you first.","— Mara"]},
+ {id:"V-0913",date:"09 / 13",sort:913,body:["Herman,","The pattern is repeatable now. It holds pieces of speech and recombines them. Sometimes the response arrives before the prompt finishes.","Jonah has been helping me inventory reels. He thinks the extra carrier is a hidden station. I have not corrected him.","— Mara"]},
+ {id:"V-0916",date:"09 / 16",sort:916,body:["Herman,","You came looking for the G-7 drawings today. I saw your name in the register. Please stop.","There are moments when the return signal sounds exactly like me, even when I am standing beside the recorder and saying nothing.","I am closing Room 3 tomorrow.","— Mara"]}
+];
+let order=[docs[2],docs[4],docs[0],docs[3],docs[1]],selected=order[0].id;
+function renderStack(){
+ stack.replaceChildren();order.forEach((d,i)=>{const c=document.createElement("div");c.className="card"+(d.id===selected?" active":"");const meta=document.createElement("div");meta.innerHTML=`<b>${d.id}</b><small>DATE ${d.date}</small>`;meta.onclick=()=>{selected=d.id;renderStack();renderPaper()};const mv=document.createElement("div");mv.className="move";const up=document.createElement("button");up.textContent="↑";up.onclick=e=>{e.stopPropagation();if(i>0){[order[i-1],order[i]]=[order[i],order[i-1]];renderStack();check()}};const dn=document.createElement("button");dn.textContent="↓";dn.onclick=e=>{e.stopPropagation();if(i<order.length-1){[order[i+1],order[i]]=[order[i],order[i+1]];renderStack();check()}};mv.append(up,dn);c.append(meta,mv);stack.appendChild(c)})
+}
+function renderPaper(){const d=docs.find(x=>x.id===selected);docId.textContent=d.id;paper.replaceChildren();const date=document.createElement("div");date.className="date";date.textContent="DATE: "+d.date;const stamp=document.createElement("div");stamp.className="stamp";stamp.textContent="ARCHIVE COPY";paper.append(date,stamp);d.body.forEach((t,i)=>{const p=document.createElement("p");p.textContent=t;if(i===d.body.length-1)p.className="sig";paper.appendChild(p)})}
+function check(){const good=order.every((d,i)=>d.sort===docs.slice().sort((a,b)=>a.sort-b.sort)[i].sort);state.textContent=good?"CHRONOLOGICAL":"UNSORTED";status.classList.toggle("ok",good);status.textContent=good?"Sequence verified. Unindexed carbon sheet released from folder backing.":"The folder was recovered out of sequence. Preserve chronological order before reviewing the carbon copy.";carbon.hidden=!good;if(good){try{const v=JSON.parse(localStorage.getItem(KEY)||"{}");v.discovered=v.discovered||{};v.discovered.valeLetters=true;localStorage.setItem(KEY,JSON.stringify(v))}catch{}setTimeout(()=>carbon.scrollIntoView({behavior:"smooth",block:"start"}),250)}}
+renderStack();renderPaper();check();
+})();
+</script>
+</body>
+</html>
