@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080909">
+<title>RWD CALL ROUTER // DTMF ATTACHMENT</title>
+<style>
+:root{--bg:#070808;--panel:#101211;--line:#364139;--text:#c5d0c6;--muted:#6e7b70;--bright:#eef5ef;--green:#8dbb94;--red:#c4655f}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(82,101,84,.16),transparent 45%),#070808;color:var(--text);font-family:"Courier New",monospace}.shell{width:min(1120px,calc(100% - 20px));margin:auto;padding:16px 0 30px}header{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;border-bottom:1px solid var(--line);padding:5px 2px 12px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.61rem}h1{margin:0;color:var(--bright);font-size:clamp(1.25rem,4vw,2rem)}.tag{border:1px solid var(--line);padding:7px 10px;color:var(--muted);font-size:.6rem}.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:12px}.panel{border:1px solid var(--line);background:linear-gradient(#111310,#0b0c0b);border-radius:5px;overflow:hidden}.bar{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:34px;padding:8px 10px;border-bottom:1px solid var(--line);color:var(--muted);font-size:.6rem;background:#0d0f0d}.scope{height:260px;background:#020302}.scope canvas{width:100%;height:100%;display:block}.controls{padding:12px}.controls button{border:1px solid #455248;background:#141714;color:var(--text);padding:10px;font:inherit;font-size:.62rem;cursor:pointer}.controls p{font-size:.58rem;line-height:1.5;color:#718077}.decode{padding:12px}.screen{height:48px;background:#020302;border:1px inset #333;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;color:#dce8de;letter-spacing:.22em;margin-bottom:8px}.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.keys button{height:48px;border:1px solid #465249;background:#151814;color:#d2ddd4;font:inherit}.keys .wide{grid-column:span 2}.status{margin-top:9px;font-size:.58rem;color:#69766c;min-height:1.2em}.status.ok{color:#9cc6a3}.status.bad{color:#d27f78}.reveal{grid-column:1/-1}.payload{padding:18px;line-height:1.55}.payload h2{margin:0 0 8px;color:var(--bright);font-size:1rem}.log{border:1px solid #3e4a40;background:#0a0c0a;padding:10px;font-size:.63rem;line-height:1.55}.log p{margin:0 0 4px}.next{display:inline-block;margin-top:12px;border:1px solid #633532;color:#dd827c;text-decoration:none;padding:9px 11px;font-size:.63rem}footer{display:flex;justify-content:space-between;gap:12px;color:#454f47;font-size:.54rem;padding:12px 2px 0}@media(max-width:760px){.grid{grid-template-columns:1fr}.reveal{grid-column:auto}}@media(max-width:500px){header{flex-direction:column;align-items:flex-start}.tag{align-self:flex-end}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><p>CALL ROUTER / AUDIO ATTACHMENT</p><h1>DTMF INTERCEPT DECODER</h1></div><div class="tag">EVENT C-G7 / TONE BLOCK</div></header>
+<section class="grid">
+  <article class="panel">
+    <div class="bar"><span>DUAL-TONE WAVEFORM</span><span id="playState">READY</span></div>
+    <div class="scope"><canvas id="scope" width="850" height="260"></canvas></div>
+    <div class="controls"><button id="play" type="button">PLAY INTERCEPT</button><p>The recovered call event contains six keypad-tone bursts before speech begins. Enter the decoded digits in sequence.</p></div>
+  </article>
+  <aside class="panel decode">
+    <div class="bar"><span>KEYPAD ENTRY</span><span>6 DIGITS</span></div>
+    <div class="screen" id="screen">------</div>
+    <div class="keys" id="keys"></div>
+    <div class="status" id="status">Awaiting tone decode.</div>
+  </aside>
+  <article class="panel reveal" id="reveal" hidden>
+    <div class="bar"><span>SWITCH LOG FRAGMENT</span><span>CRC VERIFIED</span></div>
+    <div class="payload">
+      <h2>The tone sequence is a timestamp fragment.</h2>
+      <div class="log">
+        <p>23:14:17 — inbound event opened</p>
+        <p>23:14:17 — originating route: NONE</p>
+        <p>23:14:17 — line current present before ring event</p>
+        <p>23:14:24 — audio path established</p>
+        <p>23:14:24 — voiceprint unresolved</p>
+      </div>
+      <p>The switch log repeats the same seven-second offset seen in the older loop experiments.</p>
+      <a class="next" href="../caseboard/index.html">COMMIT TO CASEBOARD</a>
+    </div>
+  </article>
+</section>
+<footer><span>DTMF DECODER // SYNTHETIC AUDIO</span><span>NO REAL TELEPHONE CONNECTION</span></footer>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),screen=$("#screen"),keys=$("#keys"),status=$("#status"),play=$("#play"),playState=$("#playState"),reveal=$("#reveal"),canvas=$("#scope"),P1="echo1.phase1.state.v1";
+const HASH="67011f60eddd04c8e5f9a7f238de8da3fc7c699e1c99335f3868af72fc2963d2";
+const rows={1:697,2:697,3:697,4:770,5:770,6:770,7:852,8:852,9:852,0:941},cols={1:1209,4:1209,7:1209,2:1336,5:1336,8:1336,0:1336,3:1477,6:1477,9:1477};
+const encoded=[50,51,49,52,49,55].map(n=>String.fromCharCode(n));let input="",audio=null,playing=false;
+function render(){screen.textContent=(input+"------").slice(0,6)}
+["1","2","3","4","5","6","7","8","9","CLR","0","ENT"].forEach(k=>{const b=document.createElement("button");b.type="button";b.textContent=k;if(k==="CLR")b.className="wide";b.onclick=()=>press(k);keys.appendChild(b)});
+async function sha(v){const h=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("")}
+async function press(k){
+ if(k==="CLR"){input="";status.textContent="Awaiting tone decode.";status.className="status";render();return}
+ if(k==="ENT"){const h=await sha(input);if(h===HASH){status.textContent="SEQUENCE VERIFIED.";status.className="status ok";reveal.hidden=false;try{const p=JSON.parse(localStorage.getItem(P1)||"{}");p.discovered=p.discovered||{};p.discovered.dtmf=true;localStorage.setItem(P1,JSON.stringify(p))}catch{}setTimeout(()=>reveal.scrollIntoView({behavior:"smooth",block:"start"}),250)}else{status.textContent="SEQUENCE MISMATCH.";status.className="status bad";input="";render()}return}
+ if(input.length<6){input+=k;render()}
+}
+async function ctx(){if(audio)return audio;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;audio=new AC();if(audio.state==="suspended")await audio.resume();return audio}
+async function playSeq(){
+ const a=await ctx();if(!a||playing)return;playing=true;play.disabled=true;playState.textContent="PLAYING";const master=a.createGain();master.gain.value=.08;master.connect(a.destination);const start=a.currentTime+.08;
+ encoded.forEach((d,i)=>{const t=start+i*.48;for(const f of [rows[d],cols[d]]){const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;o.type="sine";g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.01);g.gain.setValueAtTime(.16,t+.28);g.gain.linearRampToValueAtTime(.001,t+.32);o.connect(g).connect(master);o.start(t);o.stop(t+.34)}});setTimeout(()=>{playing=false;play.disabled=false;playState.textContent="READY"},encoded.length*480+250)
+}
+play.onclick=playSeq;
+const x=canvas.getContext("2d");function draw(ts){requestAnimationFrame(draw);const w=canvas.width,h=canvas.height;x.fillStyle="rgba(2,3,2,.2)";x.fillRect(0,0,w,h);x.strokeStyle="rgba(143,193,151,.65)";x.lineWidth=2;x.beginPath();for(let i=0;i<w;i++){const t=i/26+ts/420,y=h/2+Math.sin(t)*32+Math.sin(t*1.91)*21+(Math.random()-.5)*5;i?x.lineTo(i,y):x.moveTo(i,y)}x.stroke()}requestAnimationFrame(draw);render();
+})();
+</script>
+</body>
+</html>
