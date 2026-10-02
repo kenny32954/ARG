@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /ARG/dead-air/
+Disallow: /ARG/old-index/
