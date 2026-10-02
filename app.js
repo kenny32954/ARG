@@ -514,6 +514,7 @@
       if (state.archiveUnlocked) terminalPrint("  0024  MAIL_EVIDENCE", "ok");
       if (state.archiveUnlocked) terminalPrint("  0031  SIGNAL_LAB_1987", "ok");
       if (state.discovered.signalLab) terminalPrint("  0032  SPECTRAL_RESIDUE", "ok");
+      if (state.discovered.spectralResidue) terminalPrint("  0060  CRYPTO_PACKET_6", "ok");
       if (state.archiveUnlocked) terminalPrint("  0050  HERMAN_CASEBOARD", "ok");
       if (state.archiveUnlocked) terminalPrint("  0114  EAST_TOWER_2314", "ok");
       return;
@@ -607,6 +608,18 @@
       terminalPrint("AUXILIARY SPECTRAL CHANNEL // RWD-1987-04");
       terminalPrint("IMAGE RECONSTRUCTION BENCH: /ARG/spectral/index.html", "ok");
       terminalPrint("SOURCE CLASS: NONSPEECH / FREQUENCY-DOMAIN RESIDUE.");
+      terminalDivider();
+      return;
+    }
+    if (upper === "READ 0060" || upper === "READ CRYPTO_PACKET_6") {
+      if (!state.discovered.spectralResidue) {
+        terminalPrint("FILE NOT FOUND", "error");
+        return;
+      }
+      terminalDivider();
+      terminalPrint("PACKET 6 // HAND-ENCODED MAINTENANCE RESIDUE");
+      terminalPrint("FOUR FRAGMENTS // PLAINTEXT HASH VERIFICATION");
+      terminalPrint("CRYPTO DESK: /ARG/crypto/index.html", "ok");
       terminalDivider();
       return;
     }
