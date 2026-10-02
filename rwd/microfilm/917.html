@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0d0e0d">
+<title>RWD Microfilm Desk // Roll 9</title>
+<style>
+:root{--bg:#0c0d0c;--panel:#171918;--line:#3d463f;--text:#cbd7ce;--muted:#77847a;--green:#9cc8a7;--red:#b75e58}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#1d241f,#0b0d0b 45%);color:var(--text);font-family:"Courier New",monospace;min-height:100vh}.shell{width:min(1280px,calc(100% - 20px));margin:auto;padding:16px 0 30px}header{display:flex;justify-content:space-between;align-items:end;gap:15px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.62rem}h1{margin:0;color:#e0ebe2;font-size:clamp(1.25rem,3.8vw,2rem)}.tag{border:1px solid var(--line);padding:7px 9px;color:var(--muted);font-size:.62rem}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(270px,.5fr);gap:12px}.panel{border:1px solid var(--line);background:#121513;border-radius:5px;overflow:hidden}.bar{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);font-size:.63rem;color:var(--muted);background:#101210}.viewer{background:#020302;padding:12px;position:relative}.screen{position:relative;aspect-ratio:1.42/1;background:#111;overflow:hidden;border:8px solid #222;box-shadow:inset 0 0 80px #000}.screen canvas{width:100%;height:100%;display:block}.dust{position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}.controls{padding:12px}.control{margin-bottom:13px}.control div{display:flex;justify-content:space-between;font-size:.61rem;color:var(--muted);margin-bottom:5px}.control input{width:100%;accent-color:#7fa78a}.frame input{accent-color:#b8cfbe}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px}.buttons button{border:1px solid var(--line);background:#151a16;color:var(--text);padding:9px;font:inherit;font-size:.64rem}.ledger{font-size:.62rem;line-height:1.5;padding:10px}.ledger table{width:100%;border-collapse:collapse}.ledger td{border-bottom:1px solid #29302b;padding:6px}.ledger td:first-child{color:var(--muted)}.readout{min-height:190px;padding:12px;font-size:.66rem;line-height:1.5}.readout p{margin:0 0 6px}.readout .ok{color:#ccebd3}.readout .warn{color:#dc8881}.readout .dim{color:#657068}.reveal{grid-column:1/-1}.doc{padding:18px;background:#d0cfbc;color:#1d211e;font-family:Georgia,serif;line-height:1.55}.doc h2{font:700 1.1rem "Courier New",monospace;margin:0 0 12px;border-bottom:2px solid #333;padding-bottom:6px}.doc dl{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 20px}.doc dt{font:700 .68rem "Courier New",monospace}.doc dd{margin:2px 0 0}.stamp{display:inline-block;border:3px solid #7c302c;color:#7c302c;font:bold 1rem "Courier New";padding:6px 9px;transform:rotate(-2deg)}.hand{font-family:"Comic Sans MS",cursive;color:#5b241f;transform:rotate(-1deg);margin-top:16px}.hidden-note{opacity:.08;transition:.2s}footer{display:flex;justify-content:space-between;gap:12px;padding:12px 2px 0;color:#4d5a51;font-size:.55rem}@media(max-width:800px){.layout{grid-template-columns:1fr}.reveal{grid-column:auto}.doc dl{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><p>RAVENSWOOD PUBLIC ARCHIVE / MICROFORM STATION 2</p><h1>MUNICIPAL MICROFILM READER</h1></div><div class="tag">ROLL RWD-09 / INDEX DAMAGED</div></header>
+<section class="layout">
+  <article class="panel">
+    <div class="bar"><span>OPTICAL VIEWER</span><span id="frameTop">FRAME 900</span></div>
+    <div class="viewer"><div class="screen"><canvas id="film" width="980" height="690"></canvas><div class="dust"></div></div></div>
+  </article>
+  <aside class="panel controls">
+    <div class="control frame"><div><span>FRAME</span><strong id="frameOut">900</strong></div><input id="frame" type="range" min="900" max="930" value="900"></div>
+    <div class="control"><div><span>EXPOSURE</span><strong id="expOut">35</strong></div><input id="exposure" type="range" min="0" max="100" value="35"></div>
+    <div class="control"><div><span>CONTRAST</span><strong id="conOut">45</strong></div><input id="contrast" type="range" min="0" max="100" value="45"></div>
+    <div class="buttons"><button id="prev" type="button">◀ FRAME</button><button id="next" type="button">FRAME ▶</button></div>
+    <div class="ledger"><table>
+      <tr><td>ROLL</td><td>RWD-09</td></tr><tr><td>YEAR</td><td>[DAMAGED]</td></tr><tr><td>RANGE</td><td>900–930</td></tr><tr><td>INDEX</td><td>PARTIAL</td></tr>
+    </table></div>
+  </aside>
+  <article class="panel">
+    <div class="bar"><span>OCR / MANUAL NOTES</span><span id="ocrStatus">IDLE</span></div>
+    <div class="readout" id="readout"><p class="dim">Move film to a legible frame.</p></div>
+  </article>
+  <article class="panel reveal" id="reveal" hidden>
+    <div class="bar"><span>FRAME 917 / DOCUMENT RECOVERY</span><span>CONFIDENCE 94%</span></div>
+    <div class="doc">
+      <span class="stamp">DECOMMISSIONED</span>
+      <h2>RAVENSWOOD MUNICIPAL COMMUNICATIONS — SITE G-7</h2>
+      <dl>
+        <div><dt>ASSET CLASS</dt><dd>Experimental receive annex</dd></div>
+        <div><dt>TRANSMITTER</dt><dd>None installed</dd></div>
+        <div><dt>ANTENNA FEED</dt><dd>Sub-grade loop / Room 3</dd></div>
+        <div><dt>POWER STATUS</dt><dd>Disconnected at street service</dd></div>
+        <div><dt>PRIMARY FUNCTION</dt><dd>Low-frequency environmental monitoring</dd></div>
+        <div><dt>FINAL INSPECTION</dt><dd>Failed — unexplained induced current</dd></div>
+      </dl>
+      <p>Closure order: seal Room 3, remove all public map references to G-7, and transfer the analogue event logs to the East Relay archive.</p>
+      <p id="hiddenNote" class="hand hidden-note">The loop still registers a carrier with the feed cut. Do not let Vale reopen Room 3. — H.</p>
+    </div>
+  </article>
+</section>
+<footer><span>ARCHIVE STATION // OFFLINE COPY</span><span>NO PHYSICAL LOCATION DATA REQUIRED</span></footer>
+</main>
+<script>
+(() => {
+const $=q=>document.querySelector(q),c=$("#film"),x=c.getContext("2d"),f=$("#frame"),e=$("#exposure"),n=$("#contrast"),ro=$("#readout"),rev=$("#reveal"),note=$("#hiddenNote");
+const KEY="echo1.phase1.state.v1";
+function setOut(){ $("#frameOut").textContent=f.value;$("#frameTop").textContent="FRAME "+f.value;$("#expOut").textContent=e.value;$("#conOut").textContent=n.value}
+function noise(seed){let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+function draw(){
+ setOut();const fr=+f.value,exp=+e.value,con=+n.value,r=noise(fr*917+31),w=c.width,h=c.height;
+ const base=12+exp*1.55;x.fillStyle=`rgb(${base},${base+2},${base})`;x.fillRect(0,0,w,h);
+ x.fillStyle=`rgba(0,0,0,${.15+con/260})`;
+ for(let i=0;i<90;i++){const px=r()*w,py=r()*h,ww=20+r()*180,hh=5+r()*25;x.fillRect(px,py,ww,hh)}
+ x.strokeStyle=`rgba(245,245,220,${.05+exp/400})`;for(let i=0;i<28;i++){x.beginPath();x.moveTo(r()*w,0);x.lineTo(r()*w,h);x.stroke()}
+ x.textAlign="center";x.font="700 42px Courier New";x.fillStyle=`rgba(235,240,220,${.1+exp/180})`;x.fillText("RWD MICROFORM / "+fr,w/2,70);
+ if(fr===917){
+   const alpha=Math.min(1,Math.max(0,(exp-28)/45))*Math.min(1,Math.max(.08,(con-18)/45));
+   x.fillStyle=`rgba(238,237,215,${alpha*.85})`;x.fillRect(115,110,w-230,h-200);
+   x.fillStyle=`rgba(15,18,15,${alpha})`;x.textAlign="left";x.font="700 27px Courier New";x.fillText("SITE G-7 // RECEIVE ANNEX",155,165);
+   x.font="21px Courier New";["TRANSMITTER: NONE","FEED: SUB-GRADE LOOP / ROOM 3","STATUS: DECOMMISSIONED","PUBLIC INDEX: REMOVE"].forEach((t,i)=>x.fillText(t,155,225+i*49));
+   x.strokeRect(140,190,w-280,225);
+ }
+ if(fr===923){
+   const a=Math.max(0,(exp-55)/45);x.fillStyle=`rgba(230,230,210,${a})`;x.font="24px Courier New";x.textAlign="center";x.fillText("[FRAME REMOVED FROM MASTER ROLL]",w/2,h/2);
+ }
+ ro.replaceChildren();
+ const p=document.createElement("p");
+ if(fr===917&&exp>=42&&con>=38){p.className="ok";p.textContent="OCR MATCH: SITE G-7 / RECEIVE ANNEX / TRANSMITTER NONE";rev.hidden=false;$("#ocrStatus").textContent="MATCH";try{const v=JSON.parse(localStorage.getItem(KEY)||"{}");v.discovered=v.discovered||{};v.discovered.microfilm917=true;localStorage.setItem(KEY,JSON.stringify(v))}catch{}}
+ else if(fr===923&&exp>55){p.className="warn";p.textContent="Frame header exists. Document body physically excised from source roll.";$("#ocrStatus").textContent="MISSING"}
+ else{p.className="dim";p.textContent="No reliable OCR result.";$("#ocrStatus").textContent="IDLE"}
+ ro.appendChild(p);
+ note.style.opacity=(fr===917&&exp>70&&con>74)?Math.min(.95,.08+(exp+con-144)/50):.08;
+ if(fr===917&&exp>82&&con>82){try{const v=JSON.parse(localStorage.getItem(KEY)||"{}");v.discovered=v.discovered||{};v.discovered.microfilmHand=true;localStorage.setItem(KEY,JSON.stringify(v))}catch{}}
+}
+[f,e,n].forEach(el=>el.addEventListener("input",draw));$("#prev").onclick=()=>{f.value=Math.max(900,+f.value-1);draw()};$("#next").onclick=()=>{f.value=Math.min(930,+f.value+1);draw()};draw();
+})();
+</script>
+</body>
+</html>
