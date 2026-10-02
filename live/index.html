@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050706">
+<title>ECHO-1 // LIVE RELEASE</title>
+<style>
+:root{--bg:#040605;--panel:#08100b;--line:#1d3a29;--text:#b7e8c5;--muted:#577660;--bright:#e0ffe7;--red:#cc625c}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(36,78,49,.18),transparent 43%),#040605;color:var(--text);font-family:"Courier New",monospace}.scan{position:fixed;inset:0;pointer-events:none;opacity:.08;background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,#000 3px,#000 4px)}.shell{width:min(1120px,calc(100% - 20px));margin:auto;padding:18px 0 32px}header{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;border-bottom:1px solid var(--line);padding:5px 2px 13px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.61rem}h1{margin:0;color:var(--bright);font-size:clamp(1.4rem,5vw,2.35rem)}.tag{border:1px solid var(--line);padding:7px 10px;color:var(--muted);font-size:.61rem}.hero{border:1px solid var(--line);background:linear-gradient(#09110c,#060a07);padding:18px;margin-bottom:12px}.hero .eyebrow{font-size:.58rem;color:var(--muted)}.hero h2{margin:5px 0 8px;color:var(--bright);font-size:1.05rem}.clock{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}.clock div{border:1px solid #274531;background:#050906;padding:10px;text-align:center}.clock strong{display:block;color:var(--bright);font-size:1.2rem}.clock span{font-size:.52rem;color:var(--muted)}.phases{display:grid;gap:8px}.phase{border:1px solid var(--line);background:#080d09;padding:12px;display:grid;grid-template-columns:70px 1fr auto;align-items:center;gap:12px}.phase.locked{opacity:.46}.phase.current{border-color:#496b52;box-shadow:0 0 20px rgba(110,225,137,.07)}.num{font-size:1.25rem;color:#789984}.phase h3{margin:0 0 4px;color:var(--bright);font-size:.72rem}.phase p{margin:0;font-size:.58rem;color:var(--muted);line-height:1.4}.phase time{display:block;margin-top:5px;font-size:.53rem;color:#45604c}.phase a,.phase .lock{border:1px solid #33533b;background:#0c150f;color:#c7e9d0;text-decoration:none;padding:8px 10px;font-size:.58rem;white-space:nowrap}.phase .lock{color:#617867;border-color:#28382c}.meta{margin-top:12px;border:1px solid var(--line);padding:11px;font-size:.57rem;color:#4f6a57;line-height:1.5}.meta b{color:#8dad94;font-weight:normal}footer{display:flex;justify-content:space-between;gap:12px;color:#33483a;font-size:.53rem;padding:12px 2px 0}@media(max-width:650px){header{flex-direction:column;align-items:flex-start}.tag{align-self:flex-start}.phase{grid-template-columns:48px 1fr}.phase>a,.phase>.lock{grid-column:1/-1;text-align:center}.clock{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="scan"></div>
+<main class="shell">
+<header><div><p>RWD LIVE INCIDENT FEED</p><h1>ECHO-1 // RELEASE MONITOR</h1></div><div class="tag" id="mode">SCHEDULED MODE</div></header>
+<section class="hero"><div class="eyebrow">CURRENT INCIDENT WINDOW</div><h2 id="current">Loading release schedule…</h2><div id="nextText" style="font-size:.62rem;color:#5d7b65"></div><div class="clock" id="clock"></div></section>
+<section class="phases" id="phases"></section>
+<div class="meta"><b>Operator note:</b> This is an optional scheduled wrapper. The repository's normal root remains the full test build. To move the live launch date, edit <code>release-config.json</code>; no other phase files need to change.</div>
+<footer><span>ECHO-1 / 12-WEEK RELEASE</span><span>14 DAYS PER PHASE</span></footer>
+</main>
+<script>
+(async()=>{
+"use strict";
+const cfg=await fetch("../release-config.json",{cache:"no-store"}).then(r=>r.json());
+const start=new Date(cfg.startDate),phaseMs=cfg.phaseLengthDays*86400000;
+const $=q=>document.querySelector(q),phases=$("#phases"),current=$("#current"),nextText=$("#nextText"),clock=$("#clock");
+function startFor(i){return new Date(start.getTime()+i*phaseMs)}
+function unlocked(i,now){return now>=startFor(i)}
+function format(d){return d.toLocaleString(undefined,{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}
+function render(){
+ const now=new Date();let active=-1;for(let i=0;i<cfg.phases.length;i++)if(unlocked(i,now))active=i;
+ if(active<0){current.textContent="PRE-INCIDENT";nextText.textContent="First carrier window opens "+format(start)}
+ else{current.textContent=`PHASE ${active+1} // ${cfg.phases[active].name.toUpperCase()}`;const next=active<cfg.phases.length-1?startFor(active+1):null;nextText.textContent=next?"Next release: "+format(next):"All scheduled phases released."}
+ phases.replaceChildren();cfg.phases.forEach((p,i)=>{const open=unlocked(i,now),d=document.createElement("article");d.className="phase"+(open?"":" locked")+(i===active?" current":"");const n=document.createElement("div");n.className="num";n.textContent=String(p.id).padStart(2,"0");const info=document.createElement("div");info.innerHTML=`<h3>${p.name}</h3><p>${open?p.summary:"RELEASE WINDOW SEALED"}</p><time>${format(startFor(i))}</time>`;const action=document.createElement(open?"a":"span");action.className=open?"":"lock";if(open)action.href=p.entry;action.textContent=open?(i===active?"ENTER CURRENT":"OPEN ARCHIVE"):"LOCKED";d.append(n,info,action);phases.appendChild(d)});
+ const target=active<0?start:active<cfg.phases.length-1?startFor(active+1):null;clock.replaceChildren();if(target){let ms=Math.max(0,target-now),days=Math.floor(ms/86400000);ms%=86400000;let hrs=Math.floor(ms/3600000);ms%=3600000;let min=Math.floor(ms/60000);let sec=Math.floor(ms%60000/1000);[["DAYS",days],["HOURS",hrs],["MIN",min],["SEC",sec]].forEach(([lab,val])=>{const x=document.createElement("div");x.innerHTML=`<strong>${String(val).padStart(2,"0")}</strong><span>${lab}</span>`;clock.appendChild(x)})}else{const x=document.createElement("div");x.style.gridColumn="1/-1";x.innerHTML="<strong>COMPLETE</strong><span>ALL WINDOWS OPEN</span>";clock.appendChild(x)}
+}
+render();setInterval(render,1000);
+})().catch(()=>{document.querySelector("#current").textContent="RELEASE CONFIG UNAVAILABLE"});
+</script>
+</body>
+</html>
