@@ -446,6 +446,7 @@
       terminalPrint("  0007  MAINT_LEDGER");
       terminalPrint("  0041  [RESTRICTED]");
       if (state.archiveUnlocked) terminalPrint("  0023  CALL_ROUTER_LOG", "ok");
+      if (state.archiveUnlocked) terminalPrint("  0024  MAIL_EVIDENCE", "ok");
       if (state.archiveUnlocked) terminalPrint("  0114  EAST_TOWER_2314", "ok");
       return;
     }
@@ -481,6 +482,21 @@
       terminalPrint("NOTE: NO LIVE TELEPHONE CONNECTION.");
       terminalDivider();
       state.discovered.callArchive = true;
+      saveState();
+      return;
+    }
+    if (upper === "READ 0024" || upper === "READ MAIL_EVIDENCE") {
+      if (!state.archiveUnlocked) {
+        terminalPrint("ACCESS DENIED // INDEX KEY REQUIRED", "error");
+        return;
+      }
+      terminalDivider();
+      terminalPrint("MAIL EVIDENCE // PERSONAL EFFECTS MIRROR");
+      terminalPrint("ITEMS RELEASE AS RELATED CASE FLAGS ARE RECOVERED.");
+      terminalPrint("ARCHIVE MIRROR: /ARG/mail/index.html", "ok");
+      terminalPrint("NOTE: DIGITAL RECONSTRUCTION ONLY.");
+      terminalDivider();
+      state.discovered.mailArchive = true;
       saveState();
       return;
     }
