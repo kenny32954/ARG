@@ -45,7 +45,8 @@
     archiveUnlocked: false,
     captures: [],
     discovered: {},
-    audio: null
+    audio: null,
+    sessionPool: null
   };
 
   const transmissions = [
@@ -71,7 +72,69 @@
     if (state.discovered.broadcaster) extra.push({ delay: 3800, kind: "warn", text: "MARA-04 // GENERATIVE PHONEME MODEL ACTIVE" });
     if (state.discovered.ending_archive) extra.push({ delay: 4200, kind: "rx", text: "NO RESPONSE RECORDED // CARRIER PERSISTS" });
     if (state.discovered.ending_answer) extra.push({ delay: 2100, kind: "warn", text: "HERMAN-05 // VOICE MODEL INITIALIZED" });
+    const generated = proceduralTransmission();
+    if (generated) extra.push(generated);
     return extra.length ? [...transmissions, ...extra] : transmissions;
+  }
+
+  function proceduralTransmission() {
+    const storeKey = "echo1.generated.broadcasts.v1";
+    const subjects = [
+      "THE LOOP", "ROOM THREE", "THE ARCHIVE", "MARA-04",
+      "J-17", "ECHO-1", "YOUR RECEIVER", "THE EAST RELAY"
+    ];
+    const actions = [
+      "REMEMBERS YOUR LAST SESSION",
+      "HEARD THE QUESTION BEFORE YOU ASKED",
+      "RECORDED THE SILENCE BETWEEN WORDS",
+      "IS STILL LISTENING",
+      "HAS ANOTHER VERSION OF THIS MESSAGE",
+      "RECOGNIZED THE OBSERVER",
+      "REPEATED A VOICE THAT WAS NEVER RECORDED",
+      "IS RECEIVING WITH THE FEED CUT"
+    ];
+    const tails = [
+      "SOURCE CLOCK +00:00:07",
+      "NO TRANSMITTER KEY EVENT",
+      "INDEX DOES NOT MATCH",
+      "CARRIER PERSISTS",
+      "VOICE MODEL UNRESOLVED",
+      "DO NOT TRUST THE FIRST COPY",
+      "RETURN PATH OPEN",
+      "SESSION H-04"
+    ];
+    let seen = [];
+    try {
+      seen = JSON.parse(localStorage.getItem(storeKey) || "[]");
+      if (!Array.isArray(seen)) seen = [];
+    } catch {
+      seen = [];
+    }
+
+    let text = "";
+    for (let attempt = 0; attempt < 24; attempt++) {
+      const s = subjects[Math.floor(Math.random() * subjects.length)];
+      const a = actions[Math.floor(Math.random() * actions.length)];
+      const t = tails[Math.floor(Math.random() * tails.length)];
+      const candidate = `[SYNTH] ${s} // ${a} // ${t}`;
+      if (!seen.includes(candidate)) {
+        text = candidate;
+        break;
+      }
+    }
+    if (!text) {
+      seen = [];
+      const s = subjects[Math.floor(Math.random() * subjects.length)];
+      const a = actions[Math.floor(Math.random() * actions.length)];
+      const t = tails[Math.floor(Math.random() * tails.length)];
+      text = `[SYNTH] ${s} // ${a} // ${t}`;
+    }
+    seen.push(text);
+    seen = seen.slice(-120);
+    try {
+      localStorage.setItem(storeKey, JSON.stringify(seen));
+    } catch {}
+    return { delay: 3600 + Math.floor(Math.random() * 1900), kind: "warn", text };
   }
 
   function loadState() {
@@ -200,12 +263,13 @@
   function beginTargetSequence() {
     if (state.sequenceTimer) return;
     state.sequenceIndex = 0;
+    state.sessionPool = transmissionPool();
     const next = () => {
       if (!state.powered || !exactTarget()) {
         stopTargetSequence();
         return;
       }
-      const pool = transmissionPool();
+      const pool = state.sessionPool || transmissions;
       const item = pool[state.sequenceIndex % pool.length];
       state.sequenceTimer = setTimeout(() => {
         if (!state.powered || !exactTarget()) return stopTargetSequence();
@@ -223,6 +287,7 @@
   function stopTargetSequence() {
     clearTimeout(state.sequenceTimer);
     state.sequenceTimer = null;
+    state.sessionPool = null;
   }
 
   function flashSignal(isWarning) {
