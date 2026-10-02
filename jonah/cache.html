@@ -58,7 +58,7 @@ function check(){
  if(!good){r.className="result bad";r.textContent="CRC mismatch. Object incomplete.";return}
  const ascii=hexToAscii(chunks.map(c=>c.data).join(""));
  const temp=document.createElement("div");temp.innerHTML=ascii;
- r.className="result ok";r.textContent=temp.textContent+"\n\nRecovered path: /rwd/microfilm/917.html";
+ r.className="result ok";r.textContent=temp.textContent+"\n\nRecovered path: /ARG/rwd/microfilm/917.html";
  status.textContent="Deleted object reconstructed successfully.";
  try{const k="echo1.phase1.state.v1",v=JSON.parse(localStorage.getItem(k)||"{}");v.discovered=v.discovered||{};v.discovered.cacheRebuilt=true;localStorage.setItem(k,JSON.stringify(v))}catch{}
 }
