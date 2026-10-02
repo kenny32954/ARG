@@ -31,7 +31,7 @@
 
   const TARGET = 101.1;
   const STORAGE_KEY = "echo1.phase1.state.v1";
-  const ARCHIVE_HASH = "e1ce194bc83bea645e37dee8f5650c8fda7530a9736a55a2d3972b07c2cbeba6";
+  const ARCHIVE_HASH = "d863e2cdf524d017252a78b48920ef7f72ac2f2586e6ae3e4686a99092ba771b";
   const state = {
     powered: false,
     muted: false,
