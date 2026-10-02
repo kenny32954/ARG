@@ -445,6 +445,7 @@
       terminalPrint("  0000  PUBLIC_NOTICE");
       terminalPrint("  0007  MAINT_LEDGER");
       terminalPrint("  0041  [RESTRICTED]");
+      if (state.archiveUnlocked) terminalPrint("  0023  CALL_ROUTER_LOG", "ok");
       if (state.archiveUnlocked) terminalPrint("  0114  EAST_TOWER_2314", "ok");
       return;
     }
@@ -466,6 +467,21 @@
       terminalPrint("G-7 .... SEALED / SOURCE MISMATCH", "error");
       terminalPrint("G-8 .... PASS");
       terminalDivider();
+      return;
+    }
+    if (upper === "READ 0023" || upper === "READ CALL_ROUTER_LOG") {
+      if (!state.archiveUnlocked) {
+        terminalPrint("ACCESS DENIED // INDEX KEY REQUIRED", "error");
+        return;
+      }
+      terminalDivider();
+      terminalPrint("CALL ROUTER LOG // RECOVERED LOCAL EMULATION");
+      terminalPrint("FIRST EVENT: 00:03:11 // INBOUND ROUTE NONE");
+      terminalPrint("ARCHIVE MIRROR: /ARG/calls/index.html", "ok");
+      terminalPrint("NOTE: NO LIVE TELEPHONE CONNECTION.");
+      terminalDivider();
+      state.discovered.callArchive = true;
+      saveState();
       return;
     }
     if (upper === "READ 0041") {
