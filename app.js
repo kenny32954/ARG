@@ -441,7 +441,19 @@
       return;
     }
     if (upper === "READ 0041") {
-      terminalPrint("ACCESS DENIED // INDEX KEY REQUIRED", "error");
+      if (!state.archiveUnlocked) {
+        terminalPrint("ACCESS DENIED // INDEX KEY REQUIRED", "error");
+        return;
+      }
+      terminalDivider();
+      terminalPrint("CASE 041 // JONAH [SURNAME CORRUPT]");
+      terminalPrint("STATUS: MISSING");
+      terminalPrint("LAST VERIFIED SIGHTING: 22:52 // EAST DISTRICT");
+      terminalPrint("EVIDENCE STILL: /rwd/041.html", "ok");
+      terminalPrint("NOTE: IMAGE BRIGHTNESS DATA DOES NOT MATCH CAMERA RECORD.");
+      terminalDivider();
+      state.discovered.case041 = true;
+      saveState();
       return;
     }
     if (upper === "READ 0114" || upper === "READ EAST_TOWER_2314") {
