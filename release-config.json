@@ -1,0 +1,13 @@
+{
+  "title": "ECHO-1: The Lost Frequency",
+  "startDate": "2026-10-02T00:00:00-04:00",
+  "phaseLengthDays": 14,
+  "phases": [
+    {"id":1,"name":"First Contact","entry":"/ARG/","summary":"The carrier appears."},
+    {"id":2,"name":"Signal Mapping","entry":"/ARG/signal/grid.html","summary":"The signal has a location problem."},
+    {"id":3,"name":"Jonah's Trail","entry":"/ARG/jonah/desk.html","summary":"Jonah left more behind than the police recovered."},
+    {"id":4,"name":"Perception Drift","entry":"/ARG/herman/monitor.html","summary":"The record begins changing while it is being observed."},
+    {"id":5,"name":"The Broadcaster","entry":"/ARG/profile/index.html","summary":"A voice can be identified without proving a speaker exists."},
+    {"id":6,"name":"The Last Transmission","entry":"/ARG/final/index.html","summary":"The carrier has one composite left."}
+  ]
+}
