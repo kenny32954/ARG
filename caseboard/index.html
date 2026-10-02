@@ -36,6 +36,7 @@ const defs={
  echo:{title:"ADAPTIVE ECHO",text:"Stores and recombines voices. Behavior is inconsistent with a conventional transmitter.",type:"critical"},
  r1987:{title:"RWD-1987-04",text:"Historical loop event predating Mara's G-7 work by decades.",type:"archive"},
  loop0:{title:"LOOP-0",text:"1987 buried-loop count test. Return audio arrives seven seconds early and adds an unrecorded word.",type:"archive"},
+ packet6:{title:"PACKET 6",text:"Warnings encoded across decades converge on the same condition: listening appears to complete the circuit.",type:"archive"},
  calls:{title:"CALL ROUTER",text:"Recovered calls with no valid inbound route.",type:"archive"},
  mail:{title:"MAIL EVIDENCE",text:"Recovered physical-media simulations tied to Herman's investigation.",type:"archive"},
  microfilm:{title:"ROLL RWD-09",text:"Microfilm frame 917 documents G-7 as a receive annex with no transmitter.",type:"archive"},
@@ -44,7 +45,7 @@ const defs={
 const edges=[
  ["receiver","jonah","signal"],["receiver","g7","signal"],["g7","room3","signal"],["room3","mara","direct"],
  ["mara","herman","direct"],["jonah","j17","direct"],["j17","echo","signal"],["mara","echo","direct"],
- ["r1987","g7","archive"],["loop0","r1987","archive"],["microfilm","g7","archive"],["calls","herman","archive"],["mail","herman","archive"],
+ ["r1987","g7","archive"],["loop0","r1987","archive"],["packet6","loop0","archive"],["packet6","mara","archive"],["microfilm","g7","archive"],["calls","herman","archive"],["mail","herman","archive"],
  ["herman","receiver","direct"],["echo","receiver","signal"]
 ];
 function progress(){try{return JSON.parse(localStorage.getItem(KEY)||"{}").discovered||{}}catch{return{}}}
@@ -59,6 +60,7 @@ function unlocked(d){
   echo:!!(p.profile||p.broadcaster||p.finalComposite),
   r1987:!!(p.signalLab||p.signalLabIndex),
   loop0:!!p.spectralResidue,
+  packet6:!!p.cryptoPacket6,
   calls:!!p.callArchive,
   mail:!!p.mailArchive,
   microfilm:!!p.microfilm917,
@@ -92,6 +94,7 @@ function render(){
   p.broadcaster&&"MARA-04 is a voice model, not confirmed live speech.",
   p.signalLab&&"1987 return audio precedes the source tape by seven seconds.",
   p.spectralResidue&&"LOOP-0 adds the word “again” even though nobody says it on the source reel.",
+  p.cryptoPacket6&&"Packet 6 warns that listening may be part of the circuit itself.",
   p.finalComposite&&"Jonah's voice persists in ECHO-1 after his physical record ends."
  ].filter(Boolean);
  n.forEach(t=>{const d=document.createElement("div");d.className="note";d.innerHTML="<strong>•</strong> "+t;notes.appendChild(d)});
