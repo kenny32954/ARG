@@ -95,6 +95,7 @@ function render(){
   p.signalLab&&"1987 return audio precedes the source tape by seven seconds.",
   p.spectralResidue&&"LOOP-0 adds the word “again” even though nobody says it on the source reel.",
   p.cryptoPacket6&&"Packet 6 warns that listening may be part of the circuit itself.",
+  p.dtmf&&"The C-G7 switch log repeats the same seven-second offset in its ring and audio events.",
   p.finalComposite&&"Jonah's voice persists in ECHO-1 after his physical record ends."
  ].filter(Boolean);
  n.forEach(t=>{const d=document.createElement("div");d.className="note";d.innerHTML="<strong>•</strong> "+t;notes.appendChild(d)});
