@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#030504">
+<title>RWD FIELD LENS // G-7 PERIMETER</title>
+<style>
+:root{--bg:#030504;--line:#1f3929;--text:#a8d2b3;--muted:#4c7158;--bright:#dcffe4;--red:#cb6058}
+*{box-sizing:border-box;touch-action:none}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:"Courier New",monospace;color:var(--text)}.view{position:fixed;inset:0}.view canvas{display:block;width:100%;height:100%}.scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.15) 3px,rgba(0,0,0,.15) 4px)}.vignette{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 130px 35px #000}.hud{position:absolute;inset:0;pointer-events:none;padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(58px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));display:flex;flex-direction:column;justify-content:space-between}.top,.bottom{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.box{border:1px solid var(--line);background:rgba(3,7,4,.76);padding:8px 10px;font-size:.62rem;backdrop-filter:blur(4px)}.box strong{display:block;color:var(--bright);font-weight:normal;font-size:.72rem;margin-top:3px}.reticle{position:absolute;left:50%;top:50%;width:88px;height:88px;transform:translate(-50%,-50%);border:1px solid rgba(161,227,177,.25);border-radius:50%;pointer-events:none}.reticle:before,.reticle:after{content:"";position:absolute;background:rgba(174,235,187,.35)}.reticle:before{width:1px;left:50%;top:-20px;bottom:-20px}.reticle:after{height:1px;top:50%;left:-20px;right:-20px}.reticle.lock{border-color:rgba(225,255,231,.8);box-shadow:0 0 28px rgba(141,240,165,.22)}.controls{position:absolute;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;gap:7px;z-index:10}.controls button{border:1px solid var(--line);background:rgba(4,10,6,.9);color:var(--text);font:inherit;font-size:.61rem;padding:10px 12px;cursor:pointer}.controls button:disabled{opacity:.35}.meter{width:min(260px,42vw);height:10px;border:1px solid var(--line);padding:2px;margin-top:5px}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#31543b,#a4e8b4);transition:width .08s}.artifact{position:absolute;left:50%;top:62%;transform:translate(-50%,-50%);width:min(520px,86vw);border:1px solid #5f332f;background:rgba(15,7,6,.93);padding:14px;color:#d8aaa6;z-index:12;font-size:.68rem;line-height:1.55;display:none}.artifact.show{display:block}.artifact h2{font-size:.82rem;margin:0 0 8px;color:#efc3bf}.artifact button{border:1px solid #673834;background:#160b0a;color:#deb0ac;font:inherit;padding:7px 9px;margin-top:6px}.progress{position:absolute;right:12px;top:72px;border:1px solid var(--line);background:rgba(3,7,4,.75);padding:8px;font-size:.58rem}.dot{display:inline-block;width:7px;height:7px;border:1px solid #60816a;border-radius:50%;margin-left:4px}.dot.on{background:#9ddfaf}.hint{position:absolute;left:50%;bottom:68px;transform:translateX(-50%);font-size:.55rem;color:#45634c;background:rgba(2,4,3,.55);padding:5px 8px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="view"><canvas id="scene"></canvas><div class="scan"></div><div class="vignette"></div></div>
+<div class="hud">
+  <div class="top"><div class="box">RWD FIELD LENS<strong>G-7 PERIMETER / VIRTUAL</strong></div><div class="box">HEADING<strong><span id="heading">000</span>°</strong></div></div>
+  <div class="bottom"><div class="box">ANOMALY CORRELATION<div class="meter"><i id="meterFill"></i></div></div><div class="box">MODE<strong id="mode">DRAG</strong></div></div>
+</div>
+<div class="reticle" id="reticle"></div>
+<div class="progress">ARTIFACTS <span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+<div class="hint">DRAG TO LOOK AROUND · SCAN WHEN CORRELATION PEAKS</div>
+<div class="controls"><button id="sensor" type="button">SENSOR MODE</button><button id="scanBtn" type="button">SCAN</button></div>
+<div class="artifact" id="artifact"><h2 id="artifactTitle"></h2><div id="artifactBody"></div><button id="closeArtifact" type="button">LOG & CLOSE</button></div>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),canvas=$("#scene"),ctx=canvas.getContext("2d"),headOut=$("#heading"),fill=$("#meterFill"),ret=$("#reticle"),scanBtn=$("#scanBtn"),sensorBtn=$("#sensor"),mode=$("#mode"),artifact=$("#artifact"),title=$("#artifactTitle"),body=$("#artifactBody"),dots=[...document.querySelectorAll(".dot")];
+const KEY="echo1.field.v1",P1="echo1.phase1.state.v1";
+const targets=[
+ {deg:72,title:"WALL MARKING",body:"A painted eye shape sits beneath three layers of municipal gray. Under the lens, the newest layer reflects differently from the wall around it. Scratched below: E-04."},
+ {deg:188,title:"SERVICE HATCH",body:"The hatch is welded shut from the outside. A faded stencil reads G-7 / LOOP FEED / ROOM 3. The metal shows no evidence of a current power connection."},
+ {deg:301,title:"DISCARDED LABEL",body:"A weathered equipment label is caught behind a conduit: J-17 / PORTABLE RECORDER. The reverse side carries one handwritten word: JONAH."}
+];
+let heading=0,dragging=false,lastX=0,sensorActive=false,logged=new Set(),activeTarget=null;
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||"{}");(s.logged||[]).forEach(i=>logged.add(i))}catch{}renderDots()}
+function save(){localStorage.setItem(KEY,JSON.stringify({logged:[...logged]}));try{const p=JSON.parse(localStorage.getItem(P1)||"{}");p.discovered=p.discovered||{};p.discovered.fieldArtifacts=logged.size;localStorage.setItem(P1,JSON.stringify(p))}catch{}}
+function renderDots(){dots.forEach((d,i)=>d.classList.toggle("on",logged.has(i)))}
+function wrap(v){return (v%360+360)%360}
+function dist(a,b){const d=Math.abs(wrap(a)-wrap(b));return Math.min(d,360-d)}
+function nearest(){let best={i:-1,d:999};targets.forEach((t,i)=>{const d=dist(heading,t.deg);if(d<best.d)best={i,d}});return best}
+function correlation(){const n=nearest();const q=Math.max(0,1-n.d/28);return {i:n.i,d:n.d,q:q*q}}
+function resize(){const dpr=Math.min(2,devicePixelRatio||1);canvas.width=Math.floor(innerWidth*dpr);canvas.height=Math.floor(innerHeight*dpr);draw()}
+function draw(){
+ const w=canvas.width,h=canvas.height,dpr=Math.min(2,devicePixelRatio||1);
+ ctx.fillStyle="#071009";ctx.fillRect(0,0,w,h);
+ const horizon=h*.48;
+ const grad=ctx.createLinearGradient(0,0,0,horizon);grad.addColorStop(0,"#09100b");grad.addColorStop(1,"#172119");ctx.fillStyle=grad;ctx.fillRect(0,0,w,horizon);
+ ctx.fillStyle="#101611";ctx.fillRect(0,horizon,w,h-horizon);
+ const offset=(heading/360)*w*3;
+ ctx.strokeStyle="#293329";ctx.lineWidth=2*dpr;
+ for(let i=-6;i<12;i++){const x=((i*170*dpr-offset)%(w+340*dpr))-170*dpr;ctx.beginPath();ctx.moveTo(x,horizon*.36);ctx.lineTo(x+80*dpr,horizon);ctx.stroke()}
+ ctx.fillStyle="#171b16";
+ for(let i=-4;i<10;i++){const x=((i*260*dpr-offset*.72)%(w+520*dpr))-260*dpr;const bh=(110+(i%3)*45)*dpr;ctx.fillRect(x,horizon-bh,190*dpr,bh)}
+ ctx.strokeStyle="#374238";ctx.lineWidth=6*dpr;ctx.beginPath();ctx.moveTo(0,horizon*1.04);ctx.lineTo(w,horizon*.92);ctx.stroke();
+ for(let i=0;i<85;i++){const x=(i*97*dpr+offset*.15)%w,y=horizon+(i*47*dpr)%(h-horizon);ctx.fillStyle=`rgba(130,150,132,${.025+(i%5)*.008})`;ctx.fillRect(x,y,2*dpr,2*dpr)}
+ const c=correlation(),pct=Math.round(c.q*100);fill.style.width=pct+"%";ret.classList.toggle("lock",c.d<4);scanBtn.disabled=c.d>5||logged.has(c.i);headOut.textContent=String(Math.round(wrap(heading))).padStart(3,"0")
+}
+function openArtifact(i){activeTarget=i;title.textContent=targets[i].title;body.textContent=targets[i].body;artifact.classList.add("show")}
+scanBtn.onclick=()=>{const c=correlation();if(c.d<=5&&!logged.has(c.i))openArtifact(c.i)};
+$("#closeArtifact").onclick=()=>{if(activeTarget!=null){logged.add(activeTarget);save();renderDots();activeTarget=null}artifact.classList.remove("show");draw()};
+canvas.addEventListener("pointerdown",e=>{if(sensorActive)return;dragging=true;lastX=e.clientX;canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener("pointermove",e=>{if(!dragging||sensorActive)return;heading=wrap(heading-(e.clientX-lastX)*.22);lastX=e.clientX;draw()});
+canvas.addEventListener("pointerup",()=>dragging=false);
+sensorBtn.onclick=async()=>{
+ if(sensorActive){sensorActive=false;mode.textContent="DRAG";sensorBtn.textContent="SENSOR MODE";return}
+ try{
+   if(typeof DeviceOrientationEvent!=="undefined"&&typeof DeviceOrientationEvent.requestPermission==="function"){const r=await DeviceOrientationEvent.requestPermission();if(r!=="granted")throw new Error("denied")}
+   window.addEventListener("deviceorientation",onOrient);sensorActive=true;mode.textContent="SENSOR";sensorBtn.textContent="DRAG MODE";
+ }catch{mode.textContent="DRAG";sensorBtn.textContent="SENSOR UNAVAILABLE"}
+};
+function onOrient(e){if(!sensorActive||e.alpha==null)return;heading=wrap(360-e.alpha);draw()}
+window.addEventListener("resize",resize);load();resize();
+})();
+</script>
+</body>
+</html>
