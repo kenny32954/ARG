@@ -513,6 +513,7 @@
       if (state.archiveUnlocked) terminalPrint("  0023  CALL_ROUTER_LOG", "ok");
       if (state.archiveUnlocked) terminalPrint("  0024  MAIL_EVIDENCE", "ok");
       if (state.archiveUnlocked) terminalPrint("  0031  SIGNAL_LAB_1987", "ok");
+      if (state.archiveUnlocked) terminalPrint("  0050  HERMAN_CASEBOARD", "ok");
       if (state.archiveUnlocked) terminalPrint("  0114  EAST_TOWER_2314", "ok");
       return;
     }
@@ -579,6 +580,20 @@
       terminalPrint("RELATED PAPER INDEX IS NOT PRESENT IN CURRENT DIRECTORY.");
       terminalDivider();
       state.discovered.signalLabIndex = true;
+      saveState();
+      return;
+    }
+    if (upper === "READ 0050" || upper === "READ HERMAN_CASEBOARD") {
+      if (!state.archiveUnlocked) {
+        terminalPrint("ACCESS DENIED // INDEX KEY REQUIRED", "error");
+        return;
+      }
+      terminalDivider();
+      terminalPrint("HERMAN LOCAL CASEBOARD // BROWSER STATE MIRROR");
+      terminalPrint("ONLY COMMITTED EVIDENCE NODES ARE DISPLAYED.");
+      terminalPrint("WORKING BOARD: /ARG/caseboard/index.html", "ok");
+      terminalDivider();
+      state.discovered.caseboard = true;
       saveState();
       return;
     }
