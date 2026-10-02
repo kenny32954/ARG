@@ -67,6 +67,10 @@ The main six-phase route is surrounded by optional in-universe material:
 - spectrogram reconstruction puzzle with a separate hidden-image channel
 - multi-cipher Packet 6 desk with hash-only plaintext verification
 - real scannable QR artifact embedded in the fictional library archive
+- real Code 128 equipment-label clue in the Room 3 evidence
+- synthesized DTMF intercept puzzle attached to the recovered call router
+- 1987 newspaper archive with a hidden acrostic and source-level routing residue
+- optional 12-week live-release wrapper with six 14-day phase windows and countdowns
 
 These side branches deepen the story but are not required to complete the primary ending path.
 
@@ -77,6 +81,10 @@ Open `index.html` directly in a modern browser, or serve the repository with any
 ## GitHub Pages
 
 The project is static and is designed to run from the repository root on GitHub Pages. A `.nojekyll` marker is included so all folders are served as authored.
+
+### Scheduled live mode
+
+`/live/` is an optional release wrapper driven by `release-config.json`. The current schedule begins October 2, 2026 and opens a new phase every 14 days. Change only `startDate` to move the entire six-phase schedule; the normal repository root remains the unrestricted test build.
 
 ## Design rules
 
