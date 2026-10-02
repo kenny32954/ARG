@@ -293,7 +293,7 @@
     if (!a) return;
     const t = a.ctx.currentTime;
     const d = Math.abs(state.frequency - TARGET);
-    const lock = Math.max(0, 1 - d / 1.4);
+    const lock = state.discovered.ending_isolate ? 0 : Math.max(0, 1 - d / 1.4);
     const muted = !state.powered || state.muted;
     const noiseLevel = muted ? 0 : 0.12 - lock * 0.065;
     const carrierLevel = muted ? 0 : Math.max(0, lock - 0.68) * 0.055;
@@ -599,8 +599,8 @@
       const proximityToTune = Math.exp(-Math.pow((x - tunedX) / Math.max(5, w * 0.008), 2));
       let v = state.powered ? 9 + Math.random() * 18 : 2 + Math.random() * 3;
       if (state.powered) v += proximityToTune * 12;
-      if (state.powered && Math.abs(state.frequency - TARGET) < 1.2) v += proximityToEcho * (35 + signalStrength() * 155);
-      if (state.powered && exactTarget() && Math.sin(ts / 240) > 0.72) v += proximityToEcho * 62;
+      if (state.powered && !state.discovered.ending_isolate && Math.abs(state.frequency - TARGET) < 1.2) v += proximityToEcho * (35 + signalStrength() * 155);
+      if (state.powered && !state.discovered.ending_isolate && exactTarget() && Math.sin(ts / 240) > 0.72) v += proximityToEcho * 62;
       v = Math.max(0, Math.min(255, v));
 
       const green = Math.min(255, v * 1.5);
@@ -615,7 +615,7 @@
     }
     ctx.putImageData(row, 0, 0);
 
-    if (state.powered && exactTarget() && Math.random() < 0.025) {
+    if (state.powered && !state.discovered.ending_isolate && exactTarget() && Math.random() < 0.025) {
       ctx.fillStyle = "rgba(190,255,202,.28)";
       const width = 2 + Math.random() * 9;
       ctx.fillRect(targetX - width / 2, 0, width, 2);
