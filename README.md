@@ -62,6 +62,11 @@ The main six-phase route is surrounded by optional in-universe material:
 - hidden historical rabbit hole documenting a pre-G-7 signal incident
 - in-universe 404 page and GitHub Pages application metadata
 - repository validation workflow for JavaScript syntax and internal routes
+- dynamic evidence caseboard that reveals only already-discovered nodes
+- archival FSK demodulation bench with tone monitoring and frame recovery
+- spectrogram reconstruction puzzle with a separate hidden-image channel
+- multi-cipher Packet 6 desk with hash-only plaintext verification
+- real scannable QR artifact embedded in the fictional library archive
 
 These side branches deepen the story but are not required to complete the primary ending path.
 
