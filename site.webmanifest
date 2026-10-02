@@ -2,8 +2,17 @@
   "name": "ECHO-1: The Lost Frequency",
   "short_name": "ECHO-1",
   "start_url": "/ARG/",
+  "scope": "/ARG/",
   "display": "standalone",
   "background_color": "#050706",
   "theme_color": "#050706",
-  "description": "A browser-based fictional radio mystery ARG."
+  "description": "A browser-based fictional radio mystery ARG.",
+  "icons": [
+    {
+      "src": "/ARG/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
 }
