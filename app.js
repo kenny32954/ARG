@@ -520,6 +520,7 @@
       terminalPrint("RAVENSWOOD MUNICIPAL COMMUNICATIONS");
       terminalPrint("Routine receiver maintenance. Reports of voices on unused channels are attributed to atmospheric interference.");
       terminalPrint("Do not contact the relay office after 23:00.");
+      terminalPrint("PUBLIC MIRROR: /ARG/ravenswood/index.html", "ok");
       terminalDivider();
       return;
     }
