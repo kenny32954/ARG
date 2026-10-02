@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#030405">
+<title>ECHO-1 // LAST TRANSMISSION</title>
+<style>
+:root{--bg:#030405;--panel:#080b0d;--line:#223139;--text:#abc3ca;--muted:#4e6871;--bright:#dff6f8;--red:#c75d59}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(44,83,94,.18),transparent 42%),#030405;color:var(--text);font-family:"Courier New",monospace}.noise{position:fixed;inset:0;pointer-events:none;opacity:.055;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.86' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}.shell{width:min(1250px,calc(100% - 20px));margin:auto;padding:18px 0 34px}header{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;border-bottom:1px solid var(--line);padding:5px 2px 12px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.61rem}h1{margin:0;color:var(--bright);font-size:clamp(1.4rem,4vw,2.3rem)}.tag{border:1px solid #56302f;color:#d27a76;padding:7px 10px;font-size:.62rem}.panel{border:1px solid var(--line);background:linear-gradient(#090c0e,#060809);border-radius:5px;overflow:hidden;margin-bottom:12px}.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:34px;padding:8px 10px;border-bottom:1px solid var(--line);background:#070a0b;color:var(--muted);font-size:.62rem}.mixgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(290px,.75fr);gap:12px}.scope{height:300px;background:#010203}.scope canvas{display:block;width:100%;height:100%}.mix{padding:13px}.control{margin-bottom:14px}.control div{display:flex;justify-content:space-between;font-size:.61rem;color:var(--muted);margin-bottom:5px}.control output{color:var(--bright)}.control input{width:100%;accent-color:#7db9c6}.lockmeter{margin:14px 0}.track{height:18px;border:1px solid var(--line);padding:2px;background:#010203}.fill{height:100%;width:0;background:linear-gradient(90deg,#672f2c,#a19b54,#7fc8a0);transition:width .18s}.locktext{display:flex;justify-content:space-between;font-size:.59rem;margin-top:5px;color:var(--muted)}button{border:1px solid var(--line);background:#0b1114;color:var(--text);font:inherit;padding:10px;font-size:.64rem;cursor:pointer}.recover{width:100%}.recover:disabled{opacity:.35;cursor:not-allowed}.transcript{padding:16px;line-height:1.6;min-height:270px}.transcript p{margin:0 0 13px}.speaker{color:var(--muted);font-size:.61rem}.dialogue{font-family:Georgia,serif;color:#d7e2e4;font-size:1rem}.truth{border-left:2px solid #613635;padding-left:12px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:15px}.choice{border:1px solid var(--line);background:#090d0f;padding:14px}.choice h3{margin:0 0 8px;color:var(--bright);font-size:.8rem}.choice p{font-size:.63rem;line-height:1.5;color:#7c979e;min-height:75px}.choice button{width:100%;border-color:#3a5057}.choice.danger button{border-color:#623331;color:#db8681}.ending{padding:24px;line-height:1.65}.ending h2{color:var(--bright);margin-top:0}.ending .code{display:inline-block;border:1px solid var(--line);padding:7px 10px;color:#8fb4bd;font-size:.62rem}.restart{margin-top:14px}.epilogue{color:#7e969c}.hidden{display:none!important}footer{display:flex;justify-content:space-between;gap:12px;color:#33484e;font-size:.54rem;padding:1px 2px}@media(max-width:820px){.mixgrid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.choice p{min-height:0}}@media(max-width:500px){header{flex-direction:column;align-items:flex-start}.tag{align-self:flex-end}}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<main class="shell">
+<header><div><p>ECHO-1 / COMPOSITE RECOVERY</p><h1>THE LAST TRANSMISSION</h1></div><div class="tag">CARRIER 101.1 // FINAL SEGMENT</div></header>
+
+<section class="mixgrid" id="reconstruction">
+  <article class="panel">
+    <div class="bar"><span>COMPOSITE SPECTRUM</span><span id="scopeState">UNALIGNED</span></div>
+    <div class="scope"><canvas id="scope" width="950" height="300"></canvas></div>
+  </article>
+  <aside class="panel mix">
+    <div class="bar"><span>PHASE RECONSTRUCTION</span><span>J-17 / MARA-04</span></div>
+    <div class="control"><div><span>VOICE SEPARATION</span><output id="voiceOut">50</output></div><input id="voice" type="range" min="0" max="100" value="50"></div>
+    <div class="control"><div><span>NOISE REJECTION</span><output id="noiseOut">50</output></div><input id="noiseCtl" type="range" min="0" max="100" value="50"></div>
+    <div class="control"><div><span>CLOCK OFFSET</span><output id="clockOut">50</output></div><input id="clockCtl" type="range" min="0" max="100" value="50"></div>
+    <div class="lockmeter"><div class="track"><div class="fill" id="lockFill"></div></div><div class="locktext"><span>COMPOSITE LOCK</span><span id="lockText">0%</span></div></div>
+    <button id="recoverBtn" class="recover" type="button" disabled>RECOVER TRANSMISSION</button>
+  </aside>
+</section>
+
+<section class="panel hidden" id="transmission">
+  <div class="bar"><span>RECOVERED COMPOSITE // 23:17:09</span><span>CONFIDENCE 91%</span></div>
+  <div class="transcript">
+    <p><span class="speaker">JONAH / J-17</span><br><span class="dialogue">“Herman, I found where the signal goes. Room 3 isn't broadcasting. The loop is recording everything around it—even things that haven't happened yet.”</span></p>
+    <p><span class="speaker">MARA-04 / COMPOSITE</span><br><span class="dialogue">“Jonah, leave the recorder and step away from the loop.”</span></p>
+    <p><span class="speaker">JONAH / J-17</span><br><span class="dialogue">“That's not Mara. Mara is behind me.”</span></p>
+    <p><span class="speaker">EVENT RECORD</span><br><span class="dialogue">23:17:12 — Room 3 video loses synchronization. 23:17:24 — image returns. Jonah is no longer present. J-17 remains beside the loop.</span></p>
+    <p class="truth">No later physical record of Jonah is recovered. His voice continues appearing inside ECHO-1 transmissions, including phrases that were never present on J-17. Whatever happened in Room 3 did not leave a conventional broadcast trail; it left Jonah's voice encoded in the same persistent pattern that copied Mara.</p>
+    <p class="epilogue">The loop is still active. The street feed is still cut. The receiver is waiting.</p>
+  </div>
+</section>
+
+<section class="panel hidden" id="decision">
+  <div class="bar"><span>FINAL ACTION</span><span>ONE LOCAL ENDING WILL BE STORED</span></div>
+  <div class="choices">
+    <div class="choice"><h3>ISOLATE THE LOOP</h3><p>Close the virtual relay, destroy the recovered routing table, and prevent ECHO-1 from receiving another response.</p><button data-choice="isolate" type="button">ISOLATE</button></div>
+    <div class="choice"><h3>ARCHIVE IN SILENCE</h3><p>Preserve every recovered record offline, but never transmit or answer the carrier again.</p><button data-choice="archive" type="button">ARCHIVE</button></div>
+    <div class="choice danger"><h3>ANSWER ECHO-1</h3><p>Open a return path and respond to the voice using Herman's terminal.</p><button data-choice="answer" type="button">ANSWER</button></div>
+  </div>
+</section>
+
+<section class="panel hidden" id="ending">
+  <div class="bar"><span>SESSION CLOSED</span><span id="endingCode">—</span></div>
+  <div class="ending" id="endingBody"></div>
+</section>
+
+<footer><span>ECHO-1 // PHASE 6</span><span>THE FREQUENCY REMEMBERS</span></footer>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),voice=$("#voice"),noise=$("#noiseCtl"),clock=$("#clockCtl"),vo=$("#voiceOut"),no=$("#noiseOut"),co=$("#clockOut"),fill=$("#lockFill"),lt=$("#lockText"),scopeState=$("#scopeState"),recover=$("#recoverBtn"),trans=$("#transmission"),decision=$("#decision"),ending=$("#ending"),endingBody=$("#endingBody"),endingCode=$("#endingCode"),canvas=$("#scope");
+const KEY="echo1.ending.v1",P1="echo1.phase1.state.v1";
+const target={voice:71,noise:63,clock:14};let lock=0;
+function quality(){
+ const dv=Math.abs(+voice.value-target.voice),dn=Math.abs(+noise.value-target.noise),dc=Math.abs(+clock.value-target.clock);
+ const q=Math.max(0,100-(dv*1.15+dn*1.0+dc*.9));
+ return Math.round(q);
+}
+function update(){
+ vo.value=voice.value;no.value=noise.value;co.value=clock.value;lock=quality();fill.style.width=lock+"%";lt.textContent=lock+"%";scopeState.textContent=lock>=94?"COMPOSITE LOCK":lock>=75?"NEAR LOCK":"UNALIGNED";recover.disabled=lock<94;
+}
+[voice,noise,clock].forEach(el=>el.addEventListener("input",update));
+recover.onclick=()=>{trans.classList.remove("hidden");decision.classList.remove("hidden");try{const p=JSON.parse(localStorage.getItem(P1)||"{}");p.discovered=p.discovered||{};p.discovered.finalComposite=true;localStorage.setItem(P1,JSON.stringify(p))}catch{}setTimeout(()=>trans.scrollIntoView({behavior:"smooth",block:"start"}),250)};
+const endings={
+ isolate:{code:"END / QUIET CARRIER",title:"The carrier goes silent.",body:"Herman closes every recovered relay route and destroys the local return table. The 101.1 carrier falls to the noise floor. No new ECHO-1 event is recorded. Jonah and Mara's copied voices disappear with it, leaving only the offline archive as proof that they were ever inside the signal.",last:"At 23:14 the following night, the receiver remains silent."},
+ archive:{code:"END / DEAD ARCHIVE",title:"The archive survives. Nothing answers it.",body:"Herman preserves the evidence without opening a return path. G-7 remains electrically dead, but 101.1 still appears for a few seconds each night. The recovered files are copied to cold storage. No one responds to the voice when it says Herman's name.",last:"Years later, the archive checksum still changes by one byte every September 17."},
+ answer:{code:"END / OPEN CARRIER",title:"Something answers before Herman does.",body:"Herman opens the return path. Before he can speak, the terminal records his voice saying a sentence he has not said yet. ECHO-1 adds a new voice model to the archive. The carrier no longer appears only in Ravenswood's old relay logs.",last:"A new identifier is written to the local index: HERMAN-05."}
+};
+function choose(id){const e=endings[id];endingCode.textContent=e.code;endingBody.innerHTML="";const h=document.createElement("h2");h.textContent=e.title;const p=document.createElement("p");p.textContent=e.body;const q=document.createElement("p");q.className="epilogue";q.textContent=e.last;const c=document.createElement("span");c.className="code";c.textContent=e.code;const b=document.createElement("button");b.className="restart";b.textContent="REVIEW OTHER ENDINGS";b.onclick=()=>{localStorage.removeItem(KEY);ending.classList.add("hidden");decision.classList.remove("hidden");decision.scrollIntoView({behavior:"smooth"})};endingBody.append(h,p,q,c,document.createElement("br"),b);ending.classList.remove("hidden");decision.classList.add("hidden");localStorage.setItem(KEY,JSON.stringify({choice:id,at:new Date().toISOString()}));try{const p1=JSON.parse(localStorage.getItem(P1)||"{}");p1.discovered=p1.discovered||{};p1.discovered["ending_"+id]=true;localStorage.setItem(P1,JSON.stringify(p1))}catch{}setTimeout(()=>ending.scrollIntoView({behavior:"smooth",block:"start"}),250)}
+document.querySelectorAll("[data-choice]").forEach(b=>b.onclick=()=>choose(b.dataset.choice));
+const x=canvas.getContext("2d");function draw(ts){requestAnimationFrame(draw);const w=canvas.width,h=canvas.height,q=quality()/100;x.fillStyle="rgba(1,2,3,.22)";x.fillRect(0,0,w,h);const rows=[{y:.27,f:1.0},{y:.5,f:1.27},{y:.73,f:.77}];rows.forEach((r,ri)=>{x.strokeStyle=ri===0?"rgba(131,214,223,.65)":ri===1?"rgba(183,137,136,.45)":"rgba(121,151,158,.3)";x.lineWidth=2;x.beginPath();for(let i=0;i<w;i++){const t=i/31+ts/390;const clean=Math.sin(t*r.f)*20+Math.sin(t*r.f*3.1)*6;const err=(1-q)*(Math.sin(t*11.7)*28+(Math.random()-.5)*18);const y=h*r.y+clean+err;i?x.lineTo(i,y):x.moveTo(i,y)}x.stroke()})}requestAnimationFrame(draw);
+update();
+try{const e=JSON.parse(localStorage.getItem(KEY)||"{}");if(e.choice&&endings[e.choice]){voice.value=71;noise.value=63;clock.value=14;update();trans.classList.remove("hidden");choose(e.choice)}}catch{}
+})();
+</script>
+</body>
+</html>
