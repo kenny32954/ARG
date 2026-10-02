@@ -58,6 +58,22 @@
     { delay: 4100, kind: "rx", text: "101.1 // 101.1 // 101.1" }
   ];
 
+  function transmissionPool() {
+    const extra = [];
+    if (state.discovered.case041) extra.push({ delay: 3200, kind: "warn", text: "[VOICE] YOU OPENED HIS FILE." });
+    if (state.discovered.wallEyes) extra.push({ delay: 2900, kind: "rx", text: "E-04 // LUMA EVENT REMEMBERED" });
+    if (state.discovered.g7Fix) extra.push({ delay: 3100, kind: "warn", text: "[VOICE] G-SEVEN WAS NOT LOST. IT WAS REMOVED." });
+    if (state.discovered.g7Tape) extra.push({ delay: 3400, kind: "rx", text: "J-17 VOICE MODEL // PRESENT" });
+    if (state.discovered.microfilmHand) extra.push({ delay: 3600, kind: "warn", text: "ROOM 3 // VALE // HERMAN" });
+    if (state.discovered.monitorAnchors) extra.push({ delay: 3000, kind: "rx", text: "FOUR EVENTS DO NOT CHANGE." });
+    if (state.discovered.valeLetters) extra.push({ delay: 3500, kind: "warn", text: "[MARA-04] HERMAN, THAT IS NOT MY VOICE." });
+    if (state.discovered.profile) extra.push({ delay: 3300, kind: "rx", text: "PROFILE E1-B // OBSERVER RECOGNIZED" });
+    if (state.discovered.broadcaster) extra.push({ delay: 3800, kind: "warn", text: "MARA-04 // GENERATIVE PHONEME MODEL ACTIVE" });
+    if (state.discovered.ending_archive) extra.push({ delay: 4200, kind: "rx", text: "NO RESPONSE RECORDED // CARRIER PERSISTS" });
+    if (state.discovered.ending_answer) extra.push({ delay: 2100, kind: "warn", text: "HERMAN-05 // VOICE MODEL INITIALIZED" });
+    return extra.length ? [...transmissions, ...extra] : transmissions;
+  }
+
   function loadState() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
@@ -111,6 +127,9 @@
 
   function signalStrength(freq = state.frequency) {
     if (!state.powered) return 0;
+    if (state.discovered.ending_isolate && Math.abs(freq - TARGET) < 0.35) {
+      return 0.015 + Math.random() * 0.025;
+    }
     const d = Math.abs(freq - TARGET);
     const echoPeak = Math.max(0, 1 - d / 1.35);
     const shoulder = Math.max(0, 1 - Math.abs(freq - 92.4) / 0.55) * 0.18;
@@ -139,8 +158,16 @@
       return;
     }
 
-    if (exactTarget()) {
-      els.channelLabel.textContent = "UNKNOWN CARRIER // ECHO-1";
+    if (exactTarget() && state.discovered.ending_isolate) {
+      els.channelLabel.textContent = "NO CARRIER // ROUTE ISOLATED";
+      els.captureBtn.disabled = true;
+      state.onTargetSince = 0;
+      stopTargetSequence();
+      document.body.classList.remove("echo-event");
+      els.scopeMode.textContent = "NO RETURN";
+      setStatus("QUIET CARRIER");
+    } else if (exactTarget()) {
+      els.channelLabel.textContent = state.discovered.ending_answer ? "ECHO-1 // HERMAN-05" : "UNKNOWN CARRIER // ECHO-1";
       els.captureBtn.disabled = false;
       if (!state.onTargetSince) {
         state.onTargetSince = performance.now();
@@ -178,7 +205,8 @@
         stopTargetSequence();
         return;
       }
-      const item = transmissions[state.sequenceIndex % transmissions.length];
+      const pool = transmissionPool();
+      const item = pool[state.sequenceIndex % pool.length];
       state.sequenceTimer = setTimeout(() => {
         if (!state.powered || !exactTarget()) return stopTargetSequence();
         log(item.text, item.kind);
