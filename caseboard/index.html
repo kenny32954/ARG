@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#15120f">
+<title>HERMAN // CASEBOARD</title>
+<style>
+:root{--wall:#1b1713;--paper:#d8d0b5;--ink:#29251d;--red:#8d4039;--line:#665c47;--chalk:#cfc7ad}
+*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:radial-gradient(circle at 50% -10%,#30271e,#17130f 55%);font-family:"Courier New",monospace;color:#e0d6bd}.shell{width:min(1500px,calc(100% - 16px));margin:auto;padding:12px 0 24px}.top{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;border-bottom:1px solid #594d3a;padding:5px 3px 11px;margin-bottom:10px}.top p{margin:0 0 4px;color:#8d7f63;font-size:.59rem}.top h1{margin:0;font-size:clamp(1.25rem,4vw,2rem);color:#f1e6c7}.status{border:1px solid #5c503c;padding:7px 9px;font-size:.59rem;color:#9f9070}.board-wrap{position:relative;height:min(78vh,830px);min-height:560px;border:10px solid #3b2e21;background:
+radial-gradient(circle at 20% 20%,rgba(255,255,255,.025),transparent 25%),
+linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px),
+linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),#211a14;background-size:auto,36px 36px,36px 36px;overflow:hidden;box-shadow:inset 0 0 70px #080604,0 12px 40px #000}.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.nodes{position:absolute;inset:0}.card{position:absolute;width:210px;min-height:105px;background:var(--paper);color:var(--ink);padding:11px 12px;box-shadow:2px 5px 14px rgba(0,0,0,.45);cursor:grab;user-select:none;transform:rotate(var(--r,0deg));border:1px solid #9d957c;z-index:2}.card:active{cursor:grabbing}.card:before{content:"";position:absolute;left:50%;top:-8px;width:11px;height:11px;border-radius:50%;background:#a44b43;box-shadow:0 1px 3px #000;transform:translateX(-50%)}.card h2{margin:0 0 6px;font:700 .72rem "Courier New",monospace;border-bottom:1px solid #9d957c;padding-bottom:4px}.card p{margin:0;font:12px/1.4 Georgia,serif}.card small{display:block;margin-top:7px;color:#6c6555;font-size:.53rem}.card.critical{background:#d8beb5}.card.dark{background:#bfc9c0}.card.archive{background:#c6c1aa}.empty{position:absolute;inset:0;display:grid;place-items:center;color:#6f614d;font-size:.7rem;text-align:center;padding:20px}.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;color:#75664f;font-size:.54rem}.legend span:before{content:"";display:inline-block;width:16px;height:2px;background:#9a4a43;vertical-align:middle;margin-right:5px}.legend span:nth-child(2):before{background:#6f8f76}.legend span:nth-child(3):before{background:#b49e6a}
+.panel{margin-top:10px;border:1px solid #554938;background:#1c1712}.bar{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border-bottom:1px solid #554938;color:#8c7d60;font-size:.58rem}.notes{padding:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:7px}.note{border:1px solid #4a4031;background:#221c15;padding:9px;font-size:.58rem;line-height:1.45;color:#ab9a76}.note strong{color:#e1d4b4;font-weight:normal}.reset{background:none;border:0;color:#8d7e61;font:inherit;font-size:.57rem;cursor:pointer}@media(max-width:700px){.board-wrap{min-height:700px;height:78vh}.card{width:175px}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<main class="shell">
+<div class="top"><div><p>HERMAN VALE / LOCAL INVESTIGATION BOARD</p><h1>CASEBOARD // ECHO-1</h1></div><div class="status" id="status">NO EVIDENCE</div></div>
+<div class="board-wrap" id="board"><svg class="wires" id="wires"></svg><div class="nodes" id="nodes"></div><div class="empty" id="empty">No linked evidence has been committed to this browser yet.</div></div>
+<div class="legend"><span>direct relation</span><span>signal / infrastructure</span><span>archival relation</span></div>
+<section class="panel"><div class="bar"><span>WORKING NOTES</span><button class="reset" id="reset" type="button">RESET CARD POSITIONS</button></div><div class="notes" id="notes"></div></section>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),KEY="echo1.phase1.state.v1",POS="echo1.caseboard.positions.v1";
+const board=$("#board"),nodes=$("#nodes"),wires=$("#wires"),notes=$("#notes"),empty=$("#empty"),status=$("#status");
+const defs={
+ receiver:{title:"101.1 / ECHO-1",text:"Unknown carrier first observed through the Ravenswood receiver.",type:"critical"},
+ jonah:{title:"JONAH / CASE 041",text:"Missing after the East District camera event. J-17 recorder recovered separately.",type:""},
+ g7:{title:"G-7",text:"Decommissioned receive annex removed from current public map records.",type:"dark"},
+ room3:{title:"ROOM 3",text:"Sub-grade loop continues inducing current with feed and street power removed.",type:"dark"},
+ mara:{title:"MARA VALE",text:"Herman's sister. Reopened G-7 and named the adaptive pattern ECHO-1.",type:"critical"},
+ herman:{title:"HERMAN VALE",text:"Primary investigator. Personal connection to Mara and Jonah's disappearance.",type:""},
+ echo:{title:"ADAPTIVE ECHO",text:"Stores and recombines voices. Behavior is inconsistent with a conventional transmitter.",type:"critical"},
+ r1987:{title:"RWD-1987-04",text:"Historical loop event predating Mara's G-7 work by decades.",type:"archive"},
+ calls:{title:"CALL ROUTER",text:"Recovered calls with no valid inbound route.",type:"archive"},
+ mail:{title:"MAIL EVIDENCE",text:"Recovered physical-media simulations tied to Herman's investigation.",type:"archive"},
+ microfilm:{title:"ROLL RWD-09",text:"Microfilm frame 917 documents G-7 as a receive annex with no transmitter.",type:"archive"},
+ j17:{title:"J-17 RECORDER",text:"Jonah's portable recorder; voice fragments persist in later carrier captures.",type:""}
+};
+const edges=[
+ ["receiver","jonah","signal"],["receiver","g7","signal"],["g7","room3","signal"],["room3","mara","direct"],
+ ["mara","herman","direct"],["jonah","j17","direct"],["j17","echo","signal"],["mara","echo","direct"],
+ ["r1987","g7","archive"],["microfilm","g7","archive"],["calls","herman","archive"],["mail","herman","archive"],
+ ["herman","receiver","direct"],["echo","receiver","signal"]
+];
+function progress(){try{return JSON.parse(localStorage.getItem(KEY)||"{}").discovered||{}}catch{return{}}}
+function unlocked(d){
+ const p=progress();return {
+  receiver:true,
+  jonah:!!(p.case041||p.wallEyes),
+  g7:!!(p.g7Fix||p.g7Tape||p.microfilm917),
+  room3:!!(p.monitorAnchors||p.room3),
+  mara:!!(p.valeLetters||p.broadcaster),
+  herman:!!(p.case041||p.monitorAnchors||p.valeLetters),
+  echo:!!(p.profile||p.broadcaster||p.finalComposite),
+  r1987:!!(p.signalLab||p.signalLabIndex),
+  calls:!!p.callArchive,
+  mail:!!p.mailArchive,
+  microfilm:!!p.microfilm917,
+  j17:!!(p.g7Tape||p.desk_recorder_played||p.recorder_played)
+ }[d]||false
+}
+let active=Object.keys(defs).filter(unlocked),positions={};
+try{positions=JSON.parse(localStorage.getItem(POS)||"{}")}catch{}
+function defaults(i){
+ const cols=4,row=Math.floor(i/cols),col=i%cols;
+ return {x:7+col*23+(row%2)*3,y:8+row*27};
+}
+function render(){
+ nodes.replaceChildren();notes.replaceChildren();empty.style.display=active.length?"none":"grid";status.textContent=active.length+" KNOWN NODES";
+ active.forEach((id,i)=>{
+   const d=defs[id],pos=positions[id]||defaults(i),c=document.createElement("article");
+   c.className="card "+d.type;c.dataset.id=id;c.style.left=pos.x+"%";c.style.top=pos.y+"%";c.style.setProperty("--r",((i%5)-2)*.55+"deg");
+   c.innerHTML=`<h2>${d.title}</h2><p>${d.text}</p><small>LOCAL NODE // ${id.toUpperCase()}</small>`;
+   makeDrag(c,id);nodes.appendChild(c)
+ });
+ drawEdges();
+ const p=progress();
+ const n=[
+  p.wallEyes&&"E-04 evidence contains a second visual layer.",
+  p.g7Fix&&"Three or more bearings converge on the removed G-7 parcel.",
+  p.g7Tape&&"G-7 receives a carrier with no transmitter chain active.",
+  p.microfilm917&&"RWD-09 confirms G-7 was built as a receive annex.",
+  p.monitorAnchors&&"Four event lines survive every perceptual drift state.",
+  p.valeLetters&&"Mara says the pattern began choosing what to repeat.",
+  p.profile&&"Behavioral model favors adaptive echo over live operator.",
+  p.broadcaster&&"MARA-04 is a voice model, not confirmed live speech.",
+  p.signalLab&&"1987 return audio precedes the source tape by seven seconds.",
+  p.finalComposite&&"Jonah's voice persists in ECHO-1 after his physical record ends."
+ ].filter(Boolean);
+ n.forEach(t=>{const d=document.createElement("div");d.className="note";d.innerHTML="<strong>•</strong> "+t;notes.appendChild(d)});
+ if(!n.length){const d=document.createElement("div");d.className="note";d.textContent="No working notes committed yet.";notes.appendChild(d)}
+}
+function drawEdges(){
+ wires.innerHTML="";const rect=board.getBoundingClientRect();
+ edges.forEach(([a,b,type])=>{
+   if(!active.includes(a)||!active.includes(b))return;
+   const ca=nodes.querySelector(`[data-id="${a}"]`),cb=nodes.querySelector(`[data-id="${b}"]`);if(!ca||!cb)return;
+   const ra=ca.getBoundingClientRect(),rb=cb.getBoundingClientRect(),line=document.createElementNS("http://www.w3.org/2000/svg","line");
+   const x1=ra.left+ra.width/2-rect.left,y1=ra.top+ra.height/2-rect.top,x2=rb.left+rb.width/2-rect.left,y2=rb.top+rb.height/2-rect.top;
+   line.setAttribute("x1",x1);line.setAttribute("y1",y1);line.setAttribute("x2",x2);line.setAttribute("y2",y2);
+   line.setAttribute("stroke",type==="direct"?"#934840":type==="signal"?"#6f9076":"#b09b68");line.setAttribute("stroke-width","2");line.setAttribute("opacity",".75");wires.appendChild(line)
+ })
+}
+function makeDrag(c,id){
+ let down=false,ox=0,oy=0;
+ c.addEventListener("pointerdown",e=>{down=true;const r=c.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;c.setPointerCapture(e.pointerId);c.style.zIndex=10});
+ c.addEventListener("pointermove",e=>{if(!down)return;const br=board.getBoundingClientRect(),x=Math.max(0,Math.min(br.width-c.offsetWidth,e.clientX-br.left-ox)),y=Math.max(0,Math.min(br.height-c.offsetHeight,e.clientY-br.top-oy));c.style.left=x/br.width*100+"%";c.style.top=y/br.height*100+"%";positions[id]={x:x/br.width*100,y:y/br.height*100};drawEdges()});
+ c.addEventListener("pointerup",()=>{down=false;c.style.zIndex=2;localStorage.setItem(POS,JSON.stringify(positions));drawEdges()})
+}
+$("#reset").onclick=()=>{positions={};localStorage.removeItem(POS);render()};
+window.addEventListener("resize",drawEdges);render();
+})();
+</script>
+</body>
+</html>
