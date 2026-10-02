@@ -449,7 +449,7 @@
       terminalPrint("CASE 041 // JONAH [SURNAME CORRUPT]");
       terminalPrint("STATUS: MISSING");
       terminalPrint("LAST VERIFIED SIGHTING: 22:52 // EAST DISTRICT");
-      terminalPrint("EVIDENCE STILL: /rwd/041.html", "ok");
+      terminalPrint("EVIDENCE STILL: /ARG/rwd/041.html", "ok");
       terminalPrint("NOTE: IMAGE BRIGHTNESS DATA DOES NOT MATCH CAMERA RECORD.");
       terminalDivider();
       state.discovered.case041 = true;
