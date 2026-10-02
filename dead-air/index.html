@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#020302"><title>DEAD AIR / ARCHIVE RECEIVER</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#020302;color:#a0bea6;font-family:"Courier New",monospace;display:grid;place-items:center}.box{width:min(820px,92vw);border:1px solid #24412c;background:#061009;padding:18px;box-shadow:0 0 35px rgba(94,215,124,.06)}h1{margin:0 0 4px;color:#d2ebd7;font-size:clamp(1.3rem,4vw,2rem)}.sub{font-size:.6rem;color:#4c6e54;margin-bottom:14px}.scope{height:170px;background:#010201;border:1px solid #18311f;margin:10px 0}.scope canvas{width:100%;height:100%;display:block}.read{display:flex;justify-content:space-between;align-items:end}.freq{font:bold clamp(2.5rem,8vw,5rem) Arial,sans-serif;color:#dbf2de;letter-spacing:-.04em}.freq small{font:12px "Courier New";color:#55725b}.meter{height:12px;border:1px solid #25412d;padding:2px;margin:8px 0}.meter i{display:block;height:100%;width:0;background:#8ed09e}.slider{width:100%;accent-color:#77b888}.log{height:180px;overflow:auto;border-top:1px solid #1e3826;margin-top:14px;padding-top:10px;font-size:.64rem;line-height:1.5}.log p{margin:0 0 5px}.log .hit{color:#d9eedc}.tiny{font-size:.55rem;color:#3e5844;margin-top:10px}
+</style></head>
+<body><main class="box"><h1>DEAD AIR ARCHIVE RECEIVER</h1><div class="sub">UNINDEXED BAND CAPTURE / SOURCE DATE UNKNOWN</div>
+<div class="read"><div class="freq"><span id="freq">66.0</span><small> MHz</small></div><span id="label">NO CARRIER</span></div>
+<div class="scope"><canvas id="scope" width="780" height="170"></canvas></div>
+<div class="meter"><i id="fill"></i></div><input class="slider" id="dial" type="range" min="600" max="900" value="660">
+<div class="log" id="log"><p>Archive receiver ready.</p></div><div class="tiny">THIS PAGE IS NOT PART OF THE CURRENT MUNICIPAL INDEX.</div></main>
+<script>
+(() => {
+const $=q=>document.querySelector(q),dial=$("#dial"),freq=$("#freq"),fill=$("#fill"),label=$("#label"),log=$("#log"),c=$("#scope"),x=c.getContext("2d");
+const target=73.9;let locked=false;
+function add(t,cl=""){const p=document.createElement("p");p.textContent=t;if(cl)p.className=cl;log.appendChild(p);log.scrollTop=log.scrollHeight}
+function update(){const f=+dial.value/10,d=Math.abs(f-target),q=Math.max(0,1-d/1.2);freq.textContent=f.toFixed(1);fill.style.width=Math.round(q*100)+"%";label.textContent=d<.06?"ARCHIVE CARRIER":d<.6?"WEAK CARRIER":"NO CARRIER";if(d<.06&&!locked){locked=true;add("LOCK // SOURCE TAPE RWD-1987-04","hit");setTimeout(()=>add("BURST: 31 39 38 37 // NORTH FEED","hit"),700);setTimeout(()=>add("OFFSET: +00:00:07 // REPEATS BEFORE SOURCE","hit"),1500);setTimeout(()=>add("INDEX RESIDUE: /ARG/old-index/1987.html","hit"),2300)}if(d>.1)locked=false}
+dial.addEventListener("input",update);
+function draw(t){requestAnimationFrame(draw);const w=c.width,h=c.height;x.fillStyle="rgba(1,2,1,.25)";x.fillRect(0,0,w,h);const f=+dial.value/10,d=Math.abs(f-target),q=Math.max(0,1-d/1.1);x.strokeStyle="rgba(124,205,144,.6)";x.beginPath();for(let i=0;i<w;i++){const tt=i/33+t/430,y=h/2+Math.sin(tt)*8+Math.sin(tt*7.2)*q*28+(Math.random()-.5)*(1-q)*18;i?x.lineTo(i,y):x.moveTo(i,y)}x.stroke()}requestAnimationFrame(draw);update();
+})();
+</script></body></html>
