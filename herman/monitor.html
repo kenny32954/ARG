@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#060708">
+<title>HERMAN // FIELD MONITOR</title>
+<style>
+:root{--bg:#050708;--panel:#0a0d0e;--line:#25343a;--text:#a9c4c9;--muted:#587078;--bright:#d9f3f5;--red:#d25e5c;--stab:100;--drift:0px}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(47,80,87,.18),transparent 45%),#050708;color:var(--text);font-family:"Courier New",monospace;letter-spacing:.03em;overflow-x:hidden}.scan{position:fixed;inset:0;pointer-events:none;z-index:30;opacity:.07;background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,#000 3px,#000 4px)}.shell{width:min(1380px,calc(100% - 22px));margin:auto;padding:15px 0 30px;transform:translateX(var(--drift));transition:transform .25s}header{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;border-bottom:1px solid var(--line);padding:5px 2px 12px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.61rem}h1{margin:0;color:var(--bright);font-size:clamp(1.3rem,4vw,2.05rem)}.session{font-size:.62rem;border:1px solid var(--line);padding:7px 10px;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(310px,.65fr);gap:12px}.panel{border:1px solid var(--line);background:linear-gradient(#0a0d0e,#07090a);border-radius:5px;overflow:hidden;box-shadow:0 0 22px rgba(90,169,181,.04)}.bar{min-height:34px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border-bottom:1px solid var(--line);font-size:.63rem;color:var(--muted);background:#080b0c}.bar.alert{color:#dc7e7c;border-color:#61302f}
+.monitor{padding:12px}.scope{height:135px;background:#020304;border:1px solid #172226;position:relative;overflow:hidden;margin-bottom:12px}.scope canvas{width:100%;height:100%;display:block}.scope:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.8%,rgba(182,235,240,.12) 50%,transparent 50.2%);pointer-events:none}.log{border:1px solid #1c292d;background:#050708}.row{display:grid;grid-template-columns:88px 1fr 66px;gap:8px;align-items:center;padding:8px 9px;border-bottom:1px solid #142024;font-size:.66rem;min-height:43px}.row:last-child{border-bottom:0}.row time{color:#4e6870}.row .text{transition:opacity .12s,filter .12s}.row.mutating .text{filter:blur(calc((100 - var(--stab)) * .005px))}.row button{border:1px solid #2b3f45;background:#0b1113;color:#78959c;font:inherit;font-size:.58rem;padding:6px;cursor:pointer}.row.pinned button{color:#d9f3f5;border-color:#51727a}.row.false-pin{background:rgba(128,33,33,.13)}
+.side{padding-bottom:13px}.stability{padding:13px}.stab-top{display:flex;justify-content:space-between;font-size:.65rem;margin-bottom:6px}.stab-top strong{color:var(--bright);font-weight:normal}.track{height:18px;border:1px solid var(--line);padding:2px;background:#020304}.fill{height:100%;width:100%;background:linear-gradient(90deg,#7f2422 0 18%,#b4aa59 45%,#8bc9a0 75%);transition:width .3s}.connect{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 13px 13px}.connect button,.anchors button{border:1px solid var(--line);background:#0c1113;color:var(--text);padding:9px;font:inherit;font-size:.62rem;cursor:pointer}.connect .danger{border-color:#5d2c2b;color:#d27d7a}.ground{border-top:1px solid var(--line);padding:12px 13px}.ground h3{font-size:.63rem;font-weight:normal;color:var(--muted);margin:0 0 8px}.anchors{display:grid;gap:6px}.anchors button[disabled]{opacity:.35;cursor:not-allowed}.telemetry{margin:0 13px;padding-top:10px;border-top:1px solid var(--line);font-size:.59rem}.telemetry p{display:flex;justify-content:space-between;gap:10px;margin:6px 0}.telemetry b{font-weight:normal;color:var(--muted)}.journal{min-height:180px}.journal-body{height:190px;overflow:auto;padding:11px 13px;font-size:.63rem;line-height:1.5}.journal-body p{margin:0 0 6px}.journal-body .warn{color:#d27774}.journal-body .ok{color:#c8e9db}.unlock{grid-column:1/-1}.unlock-body{padding:18px}.unlock-body h2{margin:0 0 9px;color:var(--bright);font-size:1rem}.unlock-body p{max-width:900px;line-height:1.55}.unlock-body a{display:inline-block;border:1px solid #673130;color:#e0807d;text-decoration:none;padding:9px 12px;font-size:.65rem;background:#0c0909}.ghostword{position:fixed;pointer-events:none;z-index:2;color:rgba(198,234,237,.03);font-size:clamp(3rem,12vw,10rem);font-weight:bold;left:50%;top:45%;transform:translate(-50%,-50%);white-space:nowrap;opacity:calc((100 - var(--stab))/100)}
+body.low .shell{text-shadow:2px 0 rgba(203,78,78,.08),-2px 0 rgba(70,169,197,.08)}body.critical .panel{box-shadow:0 0 26px rgba(191,64,64,.09)}body.critical .row:nth-child(odd){transform:translateX(1px)}
+footer{display:flex;justify-content:space-between;gap:12px;padding:12px 2px 0;color:#35494f;font-size:.55rem}@media(max-width:860px){.layout{grid-template-columns:1fr}.unlock{grid-column:auto}}@media(max-width:520px){.shell{width:calc(100% - 12px);padding-top:7px}header{flex-direction:column;align-items:flex-start}.session{align-self:flex-start}.row{grid-template-columns:66px 1fr 56px;font-size:.58rem}.connect{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="scan"></div><div class="ghostword" id="ghostword">LISTENING</div>
+<main class="shell">
+<header><div><p>HERMAN / PERSONAL FIELD MONITOR // SESSION RECOVERY</p><h1>ECHO CONTAMINATION MONITOR</h1></div><div class="session">LOCAL CLOCK <span id="clock">--:--:--</span></div></header>
+<section class="layout">
+  <article class="panel">
+    <div class="bar"><span>EVENT STREAM / G-7 MIRROR</span><span id="streamState">DISCONNECTED</span></div>
+    <div class="monitor">
+      <div class="scope"><canvas id="scope" width="900" height="150"></canvas></div>
+      <div class="log" id="eventLog"></div>
+    </div>
+  </article>
+  <aside class="panel side">
+    <div class="bar"><span>PERCEPTUAL STABILITY</span><span id="band">STABLE</span></div>
+    <div class="stability"><div class="stab-top"><span>ANCHOR COHERENCE</span><strong id="stabText">100%</strong></div><div class="track"><div class="fill" id="stabFill"></div></div></div>
+    <div class="connect"><button id="connectBtn" class="danger" type="button">CONNECT 101.1</button><button id="resetBtn" type="button">RESET SESSION</button></div>
+    <div class="ground"><h3>GROUNDING REFERENCES</h3><div class="anchors"><button data-ground="clock" type="button">SYNC ROOM CLOCK</button><button data-ground="light" type="button">RAISE ROOM LIGHT</button><button data-ground="notes" type="button">READ PAPER NOTES</button></div></div>
+    <div class="telemetry"><p><b>PINNED EVENTS</b><span id="pins">0 / 4</span></p><p><b>SOURCE</b><span>G-7 MIRROR</span></p><p><b>ANTENNA</b><span>DISCONNECTED</span></p><p><b>SESSION</b><span>H-04</span></p></div>
+  </aside>
+  <article class="panel journal"><div class="bar"><span>HERMAN // FIELD JOURNAL</span><span>AUTO-SAVE</span></div><div class="journal-body" id="journal"><p>I need a record that doesn't change when the screen does.</p><p>The paper notes are still right. The clock in this program isn't.</p></div></article>
+  <article class="panel unlock" id="unlock" hidden><div class="bar alert"><span>ANCHOR SET VERIFIED</span><span>ROOM 3</span></div><div class="unlock-body"><h2>Four events survived every drift state.</h2><p>The invariant sequence indicates that G-7 was receiving continuously, the transmitter key never fired, and the Room 3 door sensor opened while the municipal site had no street power.</p><a href="../room3/index.html">OPEN ROOM 3 EVENT RECORD</a></div></article>
+</section>
+<footer><span>SESSION H-04 // LOCAL EMULATION</span><span>DISPLAY STATE MAY BE UNRELIABLE</span></footer>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),els={clock:$("#clock"),state:$("#streamState"),log:$("#eventLog"),stab:$("#stabText"),fill:$("#stabFill"),band:$("#band"),connect:$("#connectBtn"),reset:$("#resetBtn"),pins:$("#pins"),journal:$("#journal"),unlock:$("#unlock"),scope:$("#scope"),ghost:$("#ghostword")};
+const KEY="echo1.phase4.monitor.v1",P1="echo1.phase1.state.v1";
+const events=[
+ {t:"23:14:17",stable:true,text:"G-7 RECEIVE CHAIN ACTIVE"},
+ {t:"23:14:22",stable:false,v:["SOURCE RANGE 1.2 KM","SOURCE RANGE 12 M","SOURCE RANGE INSIDE ROOM","SOURCE RANGE [NULL]"]},
+ {t:"23:14:31",stable:true,text:"ROOM 3 DOOR SENSOR OPEN"},
+ {t:"23:14:44",stable:false,v:["OPERATOR ID: HALE","OPERATOR ID: HERMAN","OPERATOR ID: JONAH","OPERATOR ID: YOU"]},
+ {t:"23:15:02",stable:true,text:"NO TRANSMITTER KEY EVENT"},
+ {t:"23:15:27",stable:false,v:["EAST FEED NORMAL","EAST FEED CUT","EAST FEED BREATHING","EAST FEED WATCHING"]},
+ {t:"23:16:44",stable:true,text:"INTERNAL LOOP CURRENT RISING"},
+ {t:"23:17:01",stable:false,v:["ROOM 3 EMPTY","ROOM 3 OCCUPIED","ROOM 3 HAS ALWAYS BEEN OPEN","ROOM 3 KNOWS YOUR NAME"]}
+];
+const s={connected:false,stability:100,pinned:new Set(),timer:null,mutation:0,groundCooldown:{}};
+function stamp(){return new Date().toLocaleTimeString("en-US",{hour12:false,hour:"2-digit",minute:"2-digit",second:"2-digit"})}
+setInterval(()=>els.clock.textContent=stamp(),1000);
+function save(){localStorage.setItem(KEY,JSON.stringify({pinned:[...s.pinned],solved:s.pinned.size===4}));if(s.pinned.size===4){try{const p=JSON.parse(localStorage.getItem(P1)||"{}");p.discovered=p.discovered||{};p.discovered.monitorAnchors=true;localStorage.setItem(P1,JSON.stringify(p))}catch{}}}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||"{}");(d.pinned||[]).forEach(i=>s.pinned.add(i));if(d.solved)els.unlock.hidden=false}catch{}}
+function currentVariant(ev){if(ev.stable)return ev.text;const band=s.stability>70?0:s.stability>45?1:s.stability>22?2:3;return ev.v[(band+s.mutation)%ev.v.length]}
+function render(){
+ els.log.replaceChildren();events.forEach((ev,i)=>{const r=document.createElement("div");r.className="row"+(ev.stable?"":" mutating")+(s.pinned.has(i)?" pinned":"");r.style.setProperty("--stab",s.stability);const tm=document.createElement("time");tm.textContent=ev.t;const tx=document.createElement("span");tx.className="text";tx.textContent=currentVariant(ev);const b=document.createElement("button");b.type="button";b.textContent=s.pinned.has(i)?"PINNED":"PIN";b.onclick=()=>pin(i,ev,r);r.append(tm,tx,b);els.log.appendChild(r)});
+ els.stab.textContent=Math.round(s.stability)+"%";els.fill.style.width=s.stability+"%";els.pins.textContent=s.pinned.size+" / 4";
+ document.documentElement.style.setProperty("--stab",s.stability);
+ document.documentElement.style.setProperty("--drift",(s.stability<40?Math.sin(Date.now()/240)*(40-s.stability)/18:0)+"px");
+ document.body.classList.toggle("low",s.stability<55);document.body.classList.toggle("critical",s.stability<25);
+ els.band.textContent=s.stability>70?"STABLE":s.stability>45?"DRIFT":s.stability>22?"UNRELIABLE":"CRITICAL";
+ els.ghost.textContent=s.stability<22?(s.mutation%2?"LISTENING":"HERMAN"):"LISTENING";
+}
+function j(msg,cls=""){const p=document.createElement("p");if(cls)p.className=cls;p.textContent=msg;els.journal.appendChild(p);els.journal.scrollTop=els.journal.scrollHeight}
+function pin(i,ev,row){
+ if(s.pinned.has(i))return;
+ if(ev.stable){s.pinned.add(i);j("Pinned invariant event "+ev.t+".","ok");save();if(s.pinned.size===4){els.unlock.hidden=false;j("Four invariant events. The record is holding still.","ok");setTimeout(()=>els.unlock.scrollIntoView({behavior:"smooth",block:"start"}),300)}}else{s.stability=Math.max(3,s.stability-14);row.classList.add("false-pin");j("That line changed. It isn't an anchor.","warn")}
+ render();
+}
+function connect(){
+ s.connected=!s.connected;els.connect.textContent=s.connected?"DISCONNECT":"CONNECT 101.1";els.state.textContent=s.connected?"LIVE MIRROR":"DISCONNECTED";
+ if(s.connected){j("Carrier connected. Watching for changes.");s.timer=setInterval(()=>{s.stability=Math.max(4,s.stability-.9);if(Math.random()<.22)s.mutation=(s.mutation+1)%4;render()},650)}
+ else{clearInterval(s.timer);s.timer=null;j("Carrier disconnected.")}
+}
+function ground(type,btn){
+ const now=Date.now();if((s.groundCooldown[type]||0)>now)return;
+ const gain=type==="notes"?18:type==="clock"?13:10;s.stability=Math.min(100,s.stability+gain);s.groundCooldown[type]=now+8000;btn.disabled=true;j(type==="notes"?"Paper notes match. Screen steadier.":type==="clock"?"Room clock synchronized against battery watch.":"Room light raised. Reflections reduced.");
+ setTimeout(()=>btn.disabled=false,8000);render();
+}
+document.querySelectorAll("[data-ground]").forEach(b=>b.onclick=()=>ground(b.dataset.ground,b));
+els.connect.onclick=connect;els.reset.onclick=()=>{clearInterval(s.timer);s.connected=false;s.stability=100;s.mutation=0;els.connect.textContent="CONNECT 101.1";els.state.textContent="DISCONNECTED";render();j("Display state reset. Pinned anchors preserved.")};
+const x=els.scope.getContext("2d");function draw(ts){requestAnimationFrame(draw);const w=els.scope.width,h=els.scope.height;x.fillStyle="rgba(2,3,4,.2)";x.fillRect(0,0,w,h);x.strokeStyle=s.connected?"rgba(132,217,225,.58)":"rgba(72,98,103,.35)";x.lineWidth=2;x.beginPath();for(let i=0;i<w;i++){const t=i/38+ts/330;const amp=s.connected?18+(100-s.stability)*.18:5;const y=h/2+Math.sin(t)*amp+Math.sin(t*3.7)*amp*.27+(Math.random()-.5)*(100-s.stability)*.15;i?x.lineTo(i,y):x.moveTo(i,y)}x.stroke()}requestAnimationFrame(draw);
+load();render();
+})();
+</script>
+</body>
+</html>
