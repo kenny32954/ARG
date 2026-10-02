@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#11110e">
+<title>RWD ARCHIVE // 041</title>
+<style>
+:root{--paper:#d7d1bb;--ink:#181915;--red:#7b2521;--dim:#666456}
+*{box-sizing:border-box}
+body{margin:0;background:#11110e;color:var(--ink);font-family:"Courier New",monospace;min-height:100vh;padding:24px}
+.sheet{width:min(980px,100%);margin:auto;background:var(--paper);padding:clamp(18px,4vw,42px);box-shadow:0 18px 70px #000;position:relative;overflow:hidden}
+.sheet:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+header{border-bottom:4px double var(--ink);padding-bottom:13px;margin-bottom:22px;display:flex;justify-content:space-between;gap:20px;align-items:end}
+h1{margin:0;font-size:clamp(1.35rem,4vw,2.2rem);letter-spacing:.08em}
+.stamp{border:3px solid var(--red);color:var(--red);font-weight:bold;padding:7px 10px;transform:rotate(-2deg)}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 25px;border-bottom:1px solid #555;padding-bottom:18px}
+.row{display:grid;grid-template-columns:150px 1fr;gap:8px;font-size:.83rem}.row b{font-weight:700}.redact{background:#111;color:#111;padding:0 30px}
+.section-title{margin:25px 0 8px;font-size:.78rem;letter-spacing:.12em;border-bottom:1px solid #777;padding-bottom:4px}
+.evidence{border:1px solid #555;background:#222;padding:10px}
+.viewport{position:relative;background:#050606;aspect-ratio:16/9;overflow:hidden;border:1px solid #000}
+canvas{width:100%;height:100%;display:block;filter:contrast(1.12)}
+.overlay{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(0,0,0,.16) 4px)}
+.controls{display:flex;align-items:center;gap:12px;background:#c9c2aa;padding:10px;margin-top:8px;font-size:.72rem}
+input[type=range]{flex:1;accent-color:#222}
+.note{font-size:.75rem;line-height:1.55}.type{font-family:Georgia,serif;font-size:.92rem;line-height:1.55}
+.warning{color:var(--red);font-weight:bold}
+footer{margin-top:30px;padding-top:9px;border-top:1px solid #777;font-size:.65rem;color:#555;display:flex;justify-content:space-between;gap:10px}
+@media(max-width:650px){body{padding:8px}.sheet{padding:18px}.meta{grid-template-columns:1fr}.row{grid-template-columns:115px 1fr}header{align-items:flex-start;flex-direction:column}.stamp{align-self:flex-end}}
+</style>
+</head>
+<body>
+<main class="sheet">
+<header>
+  <div><small>RAVENSWOOD MUNICIPAL ARCHIVE / RECOVERED INDEX</small><h1>CASE FILE 041</h1></div>
+  <div class="stamp">UNRESOLVED</div>
+</header>
+
+<section class="meta">
+  <div class="row"><b>SUBJECT</b><span>JONAH <span class="redact">UNKNOWN</span></span></div>
+  <div class="row"><b>STATUS</b><span>MISSING</span></div>
+  <div class="row"><b>FILE OPENED</b><span>09 / 17 / [CORRUPT]</span></div>
+  <div class="row"><b>LAST VERIFIED</b><span>22:52 / EAST DISTRICT</span></div>
+  <div class="row"><b>RELATED NODE</b><span>EAST-RELAY-04</span></div>
+  <div class="row"><b>CONTACT</b><span>HERMAN [RELATION WITHHELD]</span></div>
+</section>
+
+<h2 class="section-title">RECOVERED EVIDENCE STILL // CAMERA E-04</h2>
+<section class="evidence">
+  <div class="viewport">
+    <canvas id="still" width="1280" height="720"></canvas>
+    <div class="overlay"></div>
+  </div>
+  <div class="controls">
+    <span>IMAGE GAIN</span>
+    <input id="gain" type="range" min="0" max="100" value="18" aria-label="image gain">
+    <output id="gainOut">18%</output>
+  </div>
+</section>
+
+<h2 class="section-title">RECOVERY NOTES</h2>
+<div class="type">
+  <p>Frame recovered from a municipal camera facing the east service alley. The original recording reports normal illumination. This extracted frame does not.</p>
+  <p>At 22:51:58 the subject enters frame. At 22:52:04 the camera records twelve seconds of static. When the image returns, the alley is empty.</p>
+  <p class="warning">An additional exposure layer exists in the file but is not present in the camera's metadata.</p>
+</div>
+
+<h2 class="section-title">INCIDENT NOTE</h2>
+<p class="note">At 00:03, Herman received a call from an unidentified source. The caller addressed him by name and instructed him to stop investigating the unused broadcast band. No incoming number was recorded.</p>
+
+<footer><span>RWD-ARCHIVE // 041</span><span>CHAIN OF CUSTODY: INCOMPLETE</span></footer>
+</main>
+
+<script>
+(() => {
+  const c=document.getElementById("still"),x=c.getContext("2d"),s=document.getElementById("gain"),o=document.getElementById("gainOut");
+  const phrase=[84,72,69,32,69,89,69,83,32,65,82,69,32,87,65,84,67,72,73,78,71,32,70,82,79,77,32,84,72,69,32,87,65,76,76,83];
+  let seed=417041;
+  const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+  const eyes=[];
+  for(let i=0;i<19;i++)eyes.push([rnd(),rnd(),.45+rnd()*.8]);
+  function wall(g){
+    seed=417041;
+    const w=c.width,h=c.height;
+    x.fillStyle="#060707";x.fillRect(0,0,w,h);
+    const base=8+g*.19;
+    for(let yy=0;yy<h;yy+=48){
+      for(let xx=-40;xx<w;xx+=112){
+        const off=(Math.floor(yy/48)%2)*56;
+        const v=base+rnd()*14;
+        x.fillStyle=`rgb(${v},${v+2},${v+1})`;
+        x.fillRect(xx+off,yy,106,42);
+      }
+    }
+    x.fillStyle=`rgba(200,210,198,${.025+g/900})`;
+    for(let i=0;i<1100;i++)x.fillRect(rnd()*w,rnd()*h,1+rnd()*3,1+rnd()*2);
+
+    if(g>58){
+      const a=Math.min(.72,(g-58)/42*.72);
+      eyes.forEach(([px,py,sc],i)=>{
+        const ex=px*w,ey=py*h,ew=34*sc,eh=13*sc;
+        x.save();x.translate(ex,ey);x.rotate((i%5-2)*.035);
+        x.strokeStyle=`rgba(194,204,189,${a*.56})`;x.lineWidth=2;
+        x.beginPath();x.ellipse(0,0,ew,eh,0,0,Math.PI*2);x.stroke();
+        x.fillStyle=`rgba(5,6,5,${a})`;x.beginPath();x.arc(0,0,5*sc,0,Math.PI*2);x.fill();x.restore();
+      });
+    }
+    if(g>82){
+      const a=Math.min(.78,(g-82)/18*.78);
+      x.font="700 40px Courier New";x.textAlign="center";
+      x.fillStyle=`rgba(208,218,202,${a})`;
+      x.fillText(String.fromCharCode(...phrase),w/2,h*.83);
+    }
+    if(g>92){
+      x.fillStyle=`rgba(120,20,18,${(g-92)/18})`;x.font="18px Courier New";x.textAlign="left";
+      x.fillText("E-04 / FRAME 225204 / SOURCE CLOCK +00:00:07",26,h-28);
+      try{
+        const k="echo1.phase1.state.v1",v=JSON.parse(localStorage.getItem(k)||"{}");
+        v.discovered=v.discovered||{};v.discovered.wallEyes=true;localStorage.setItem(k,JSON.stringify(v));
+      }catch{}
+    }
+  }
+  function render(){const g=+s.value;o.value=g+"%";wall(g)}
+  s.addEventListener("input",render);render();
+})();
+</script>
+</body>
+</html>
