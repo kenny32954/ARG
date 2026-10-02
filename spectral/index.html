@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#030405">
+<title>RWD SPECTRAL RESIDUE // 1987-04</title>
+<style>
+:root{--bg:#030405;--panel:#080c0f;--line:#253940;--text:#a9c6cc;--muted:#536d74;--bright:#ddf5f7;--red:#cb625c}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(51,91,101,.17),transparent 44%),#030405;color:var(--text);font-family:"Courier New",monospace}.shell{width:min(1320px,calc(100% - 20px));margin:auto;padding:16px 0 30px}header{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;border-bottom:1px solid var(--line);padding:5px 2px 12px;margin-bottom:12px}header p{margin:0 0 4px;color:var(--muted);font-size:.61rem}h1{margin:0;color:var(--bright);font-size:clamp(1.3rem,4vw,2.05rem)}.tag{border:1px solid var(--line);padding:7px 10px;color:var(--muted);font-size:.61rem}.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);gap:12px}.panel{border:1px solid var(--line);background:linear-gradient(#090d10,#06090b);border-radius:5px;overflow:hidden}.bar{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:34px;padding:8px 10px;border-bottom:1px solid var(--line);background:#070a0c;color:var(--muted);font-size:.61rem}.screen{aspect-ratio:1.75/1;background:#010203;position:relative;overflow:hidden}.screen canvas{width:100%;height:100%;display:block;image-rendering:pixelated}.screen:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(0,0,0,.13) 4px)}.scale{display:flex;justify-content:space-between;padding:7px 10px;color:#4a646c;font-size:.54rem}.controls{padding:12px}.control{margin-bottom:13px}.control div{display:flex;justify-content:space-between;color:var(--muted);font-size:.59rem;margin-bottom:5px}.control select,.control input{width:100%;background:#040709;color:var(--bright);border:1px solid #294249;padding:9px;font:inherit}.control input{accent-color:#7dbbc6}.meter{height:14px;border:1px solid #2a424a;padding:2px;background:#010203}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#374f56,#8ad0dc);transition:width .2s}.status{font-size:.58rem;color:#5e777e;line-height:1.45;margin-top:8px}.reveal{grid-column:1/-1}.payload{padding:18px;line-height:1.55}.payload h2{margin:0 0 8px;color:var(--bright);font-size:1rem}.phrase{border:1px solid #2b4249;background:#030607;padding:13px;color:#d7efdc;font-size:.78rem;letter-spacing:.09em;margin:14px 0}.payload code{display:block;background:#020405;border:1px solid #22383e;color:#a3c9b0;padding:10px;font-size:.63rem;word-break:break-all}.next{display:inline-block;margin-top:12px;border:1px solid #603431;color:#d9817c;text-decoration:none;padding:9px 11px;font-size:.63rem}footer{display:flex;justify-content:space-between;gap:12px;color:#33494f;font-size:.54rem;padding:12px 2px 0}@media(max-width:820px){.grid{grid-template-columns:1fr}.reveal{grid-column:auto}}@media(max-width:500px){header{flex-direction:column;align-items:flex-start}.tag{align-self:flex-end}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><p>RWD SIGNAL LAB / IMAGE RESIDUE CHANNEL</p><h1>SPECTRAL FRAME RECONSTRUCTION</h1></div><div class="tag">RWD-1987-04 / AUX</div></header>
+<section class="grid">
+  <article class="panel">
+    <div class="bar"><span>SPECTROGRAM</span><span id="viewState">CORRUPT</span></div>
+    <div class="screen"><canvas id="spec" width="1050" height="600"></canvas></div>
+    <div class="scale"><span>0 s</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5 s</span></div>
+  </article>
+  <aside class="panel controls">
+    <div class="bar"><span>IMAGE RECONSTRUCTION</span><span id="score">0%</span></div>
+    <div class="control"><div><span>FFT WINDOW</span><span>samples</span></div><select id="window"><option>256</option><option>512</option><option>1024</option><option>2048</option></select></div>
+    <div class="control"><div><span>TIME DIRECTION</span><span>axis</span></div><select id="direction"><option value="forward">FORWARD</option><option value="reverse">REVERSE</option></select></div>
+    <div class="control"><div><span>GAIN</span><span id="gainOut">40</span></div><input id="gain" type="range" min="0" max="100" value="40"></div>
+    <div class="control"><div><span>FLOOR</span><span id="floorOut">22</span></div><input id="floor" type="range" min="0" max="60" value="22"></div>
+    <div class="meter"><i id="meter"></i></div>
+    <p class="status">The auxiliary channel is not speech. Its energy distribution changes when the tape is reconstructed in reverse time.</p>
+  </aside>
+  <article class="panel reveal" id="reveal" hidden>
+    <div class="bar"><span>VISUAL RESIDUE RECOVERED</span><span>FRAME STABLE</span></div>
+    <div class="payload">
+      <h2>A message is embedded in the spectrum.</h2>
+      <div class="phrase">THE COUNT ANSWERED FIRST</div>
+      <p>The phrase is not present as speech in the 1987 source reel. It only appears when the auxiliary channel is interpreted as frequency-domain image data.</p>
+      <code>RWD AUX INDEX // LOOP-0 // COUNT TEST // SOURCE CLOCK +00:00:07</code>
+      <a class="next" href="../old-index/loop0.html">OPEN LOOP-0 ENGINEERING NOTE</a>
+    </div>
+  </article>
+</section>
+<footer><span>SPECTRAL LAB // STATIC VISUALIZATION</span><span>ARCHIVAL SIGNAL EMULATION</span></footer>
+</main>
+<script>
+(() => {
+"use strict";
+const $=q=>document.querySelector(q),els={canvas:$("#spec"),win:$("#window"),dir:$("#direction"),gain:$("#gain"),floor:$("#floor"),gainOut:$("#gainOut"),floorOut:$("#floorOut"),score:$("#score"),meter:$("#meter"),state:$("#viewState"),reveal:$("#reveal")},P1="echo1.phase1.state.v1";
+const ctx=els.canvas.getContext("2d");let seed=198704;
+function rnd(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}
+function score(){
+ let q=0;if(els.win.value==="1024")q+=35;if(els.dir.value==="reverse")q+=30;
+ q+=Math.max(0,22-Math.abs(+els.gain.value-74))*.9;
+ q+=Math.max(0,13-Math.abs(+els.floor.value-18))*.95;
+ return Math.max(0,Math.min(100,Math.round(q)))
+}
+function textMask(text,w,h){
+ const o=document.createElement("canvas");o.width=w;o.height=h;const x=o.getContext("2d");
+ x.fillStyle="#000";x.fillRect(0,0,w,h);x.fillStyle="#fff";x.font="700 54px Courier New";x.textAlign="center";x.textBaseline="middle";x.fillText(text,w/2,h/2);return x.getImageData(0,0,w,h).data
+}
+function draw(){
+ seed=198704;const w=els.canvas.width,h=els.canvas.height,q=score()/100,mask=textMask("THE COUNT ANSWERED FIRST",w,h);
+ const img=ctx.createImageData(w,h);
+ const gain=+els.gain.value/100,floor=+els.floor.value/60;
+ for(let y=0;y<h;y++){
+  for(let x=0;x<w;x++){
+   const i=(y*w+x)*4,m=mask[i]/255,band=(Math.sin(y*.085)+1)*.5,noise=rnd();
+   let v=12+noise*34+band*13;
+   if(q>.55)v+=m*(q-.55)*380;
+   if(q>.8&&y%47<2)v+=42;
+   v=(v-floor*32)*(0.65+gain*.9);v=Math.max(0,Math.min(255,v));
+   img.data[i]=Math.floor(v*.22);img.data[i+1]=Math.floor(v*.92);img.data[i+2]=Math.floor(v);img.data[i+3]=255;
+  }
+ }
+ if(els.dir.value==="reverse"){
+   const tmp=document.createElement("canvas");tmp.width=w;tmp.height=h;tmp.getContext("2d").putImageData(img,0,0);
+   ctx.save();ctx.scale(-1,1);ctx.drawImage(tmp,-w,0);ctx.restore()
+ }else ctx.putImageData(img,0,0);
+ els.gainOut.textContent=els.gain.value;els.floorOut.textContent=els.floor.value;const s=score();els.score.textContent=s+"%";els.meter.style.width=s+"%";els.state.textContent=s>=92?"STABLE":s>=70?"PARTIAL":"CORRUPT";
+ if(s>=92){els.reveal.hidden=false;try{const p=JSON.parse(localStorage.getItem(P1)||"{}");p.discovered=p.discovered||{};p.discovered.spectralResidue=true;localStorage.setItem(P1,JSON.stringify(p))}catch{}}
+}
+[els.win,els.dir,els.gain,els.floor].forEach(e=>e.addEventListener("input",draw));draw();
+})();
+</script>
+</body>
+</html>
