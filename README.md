@@ -50,6 +50,21 @@ The repository now contains a complete six-phase playable web path:
 
 Progress is stored with browser `localStorage`. No external libraries or servers are required.
 
+## Additional world layers
+
+The main six-phase route is surrounded by optional in-universe material:
+
+- fictional Ravenswood municipal website, public notices, and library archive
+- virtual field-investigation lens with touch/mouse and optional device orientation
+- simulated recovered phone-call archive
+- simulated physical-mail evidence with raking-light inspection
+- progress-reactive and procedurally varied ECHO-1 transmissions
+- hidden historical rabbit hole documenting a pre-G-7 signal incident
+- in-universe 404 page and GitHub Pages application metadata
+- repository validation workflow for JavaScript syntax and internal routes
+
+These side branches deepen the story but are not required to complete the primary ending path.
+
 ## Run locally
 
 Open `index.html` directly in a modern browser, or serve the repository with any static HTTP server. WebAudio features require a user interaction before playback, as required by modern browsers.
