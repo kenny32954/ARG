@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090806">
+<title>G-7 // RECOVERY DECK</title>
+<link rel="stylesheet" href="g7.css">
+</head>
+<body>
+<div class="grain"></div>
+<main class="shell">
+<header>
+  <div><p>RWD ENGINEERING / DECOMMISSIONED ASSET</p><h1>G-7 MAGNETIC RECOVERY DECK</h1></div>
+  <div class="stamp">SEALED 09-17</div>
+</header>
+
+<section class="grid">
+  <article class="panel tape-panel">
+    <div class="bar"><span>REEL G7-2314</span><span id="deckState">NO MEDIA</span></div>
+    <div class="deck">
+      <div class="reel"><div class="hub"></div></div>
+      <div class="tape-path"><div class="head"></div><div class="tape"></div></div>
+      <div class="reel"><div class="hub"></div></div>
+    </div>
+    <canvas id="scope" width="920" height="260"></canvas>
+    <div class="transport">
+      <button id="loadBtn" type="button">LOAD</button>
+      <button id="playBtn" type="button" disabled>PLAY</button>
+      <button id="stopBtn" type="button" disabled>STOP</button>
+      <span id="counter">00:00.0</span>
+    </div>
+  </article>
+
+  <aside class="panel calibration">
+    <div class="bar"><span>HEAD CALIBRATION</span><span id="quality">0%</span></div>
+    <label>SPEED
+      <select id="speed">
+        <option value="3.75">3.75 IPS</option>
+        <option value="7.5">7.5 IPS</option>
+        <option value="15">15 IPS</option>
+      </select>
+    </label>
+    <label>HEAD
+      <select id="channel">
+        <option value="A">CHANNEL A</option>
+        <option value="B">CHANNEL B</option>
+      </select>
+    </label>
+    <label>DIRECTION
+      <select id="direction">
+        <option value="FWD">FORWARD</option>
+        <option value="REV">REVERSE</option>
+      </select>
+    </label>
+    <label>PHASE
+      <select id="phase">
+        <option value="0">0°</option>
+        <option value="180">180°</option>
+      </select>
+    </label>
+    <div class="qmeter"><div id="qfill"></div></div>
+    <p class="small">Azimuth is locked mechanically. Transport calibration must match the source dub.</p>
+  </aside>
+
+  <article class="panel memo">
+    <div class="bar"><span>MAINTENANCE SCRAPS // G-7</span><span>RECOVERED 38%</span></div>
+    <div class="paper">
+      <p>...replacement capstan stable at <mark>7½</mark>. Do not use field rate.</p>
+      <p>Primary head burned after the September surge. Archive copy exists on <mark>secondary head</mark>.</p>
+      <p>Technician Hale copied the reel tail-first after the splice failed. Mark the can <mark>REV</mark> before storage.</p>
+      <p>Cancellation persists until the secondary head is rotated electrically. Service note: <mark>180</mark>.</p>
+      <p class="redacted">██████████████████████████████████████████</p>
+      <p>There is no transmitter in G-7. I checked twice.</p>
+    </div>
+  </article>
+
+  <article class="panel printer">
+    <div class="bar"><span>SIGNAL PRINTER</span><span id="printerState">WAITING</span></div>
+    <div id="printout" class="printout">
+      <p>RECOVERY ENGINE READY.</p>
+      <p>CALIBRATION REQUIRED.</p>
+    </div>
+  </article>
+
+  <article class="panel recovered" id="recovered" hidden>
+    <div class="bar alert"><span>RECOVERED SEGMENT</span><span>23:14:17</span></div>
+    <div class="payload">
+      <p class="voice">[VOICE / MALE / ID UNKNOWN]</p>
+      <blockquote>“G-seven isn't sending anything. The carrier is arriving through the receive chain. Kill the antenna and it keeps getting stronger.”</blockquote>
+      <p class="voice">[SECOND VOICE / MATCH CONFIDENCE 61%]</p>
+      <blockquote>“Herman? If this reaches you, don't follow the signal. It knows when you listen.”</blockquote>
+      <div class="machine">
+        <span>RECOVERED LABEL</span>
+        <strong>J-17 / PORTABLE RECORDER / PROPERTY: JONAH</strong>
+      </div>
+      <p class="checksum">INDEX FRAGMENT: 10-15-14-1-8 / 4-5-19-11</p>
+    </div>
+  </article>
+</section>
+<footer><span>G-7 / ARCHIVAL EMULATION</span><span>NO LIVE RADIO TRANSMISSION</span></footer>
+</main>
+<script src="g7.js"></script>
+</body>
+</html>
