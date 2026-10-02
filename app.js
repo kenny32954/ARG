@@ -512,6 +512,7 @@
       terminalPrint("  0041  [RESTRICTED]");
       if (state.archiveUnlocked) terminalPrint("  0023  CALL_ROUTER_LOG", "ok");
       if (state.archiveUnlocked) terminalPrint("  0024  MAIL_EVIDENCE", "ok");
+      if (state.archiveUnlocked) terminalPrint("  0031  SIGNAL_LAB_1987", "ok");
       if (state.archiveUnlocked) terminalPrint("  0114  EAST_TOWER_2314", "ok");
       return;
     }
@@ -563,6 +564,21 @@
       terminalPrint("NOTE: DIGITAL RECONSTRUCTION ONLY.");
       terminalDivider();
       state.discovered.mailArchive = true;
+      saveState();
+      return;
+    }
+    if (upper === "READ 0031" || upper === "READ SIGNAL_LAB_1987") {
+      if (!state.archiveUnlocked) {
+        terminalPrint("ACCESS DENIED // INDEX KEY REQUIRED", "error");
+        return;
+      }
+      terminalDivider();
+      terminalPrint("RECOVERED SIGNAL DUB // RWD-1987-04");
+      terminalPrint("OBJECT CONTAINS DUAL-TONE DATA BURSTS.");
+      terminalPrint("ANALYSIS BENCH: /ARG/lab/index.html", "ok");
+      terminalPrint("RELATED PAPER INDEX IS NOT PRESENT IN CURRENT DIRECTORY.");
+      terminalDivider();
+      state.discovered.signalLabIndex = true;
       saveState();
       return;
     }
