@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>JONAH-PC // RECOVERED SESSION</title>
+<link rel="stylesheet" href="desk.css">
+</head>
+<body>
+<div id="boot" class="boot">
+  <div class="bootbox">
+    <p>RAVENSWOOD FORENSIC IMAGE LOADER v2.4</p>
+    <p>DEVICE: J-17 / HOME TERMINAL</p>
+    <p id="bootLine">Mounting recovered volume...</p>
+    <div class="bootbar"><i id="bootFill"></i></div>
+  </div>
+</div>
+
+<main id="desktop" class="desktop" aria-label="Recovered computer desktop">
+  <div class="desktop-watermark">J-17 // RECOVERED IMAGE</div>
+  <div id="icons" class="icons"></div>
+  <div id="windows" class="windows"></div>
+
+  <div class="taskbar">
+    <button id="startBtn" type="button">RWD</button>
+    <div id="tasks" class="tasks"></div>
+    <div class="tray">
+      <span id="signalTray">RF: --</span>
+      <span id="deskClock">23:14</span>
+    </div>
+  </div>
+
+  <div id="startMenu" class="start-menu" hidden>
+    <div class="user">JONAH</div>
+    <button data-open="mydocs" type="button">Documents</button>
+    <button data-open="recycle" type="button">Recycle Bin</button>
+    <button data-open="system" type="button">System Info</button>
+    <button id="shutdown" type="button">Shut Down</button>
+  </div>
+</main>
+
+<template id="windowTemplate">
+  <section class="window">
+    <header class="window-head">
+      <span class="window-title"></span>
+      <div>
+        <button class="minimize" type="button">_</button>
+        <button class="close" type="button">×</button>
+      </div>
+    </header>
+    <div class="window-body"></div>
+  </section>
+</template>
+
+<script src="desk.js"></script>
+</body>
+</html>
